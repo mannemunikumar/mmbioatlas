@@ -1,0 +1,8 @@
+{
+  "name": "Remix M \u0026 M BioATLAS",
+  "description": "Advancing Life Sciences with Precision Bioinformatics \u0026 Analytics. Contract Research Organization (CRO) and training partner for molecular simulations, NGS analysis, academic writing, and statistical data solutions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
