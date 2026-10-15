@@ -263,6 +263,7 @@ export const LEADERSHIP_CONTACT = {
   phoneDisplay: '+ 91 9492373997',
   phoneRaw: '+919492373997',
   whatsappUrl: 'https://wa.me/919492373997',
+  linkedinUrl: 'https://www.linkedin.com/company/mmbioatlas/?viewAsMember=true',
   email: 'mmbioatlas@gmail.com',
   directEmail: 'mmbioatlas@gmail.com',
   institutionalEmail: 'research@mmbioatlas.org',

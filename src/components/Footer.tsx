@@ -4,7 +4,8 @@ import { AtlasView } from '../types';
 import { 
   ShieldCheck, 
   PhoneCall, 
-  Mail
+  Mail,
+  Linkedin
 } from 'lucide-react';
 import { LEADERSHIP_CONTACT } from '../data/organizationData';
 
@@ -39,6 +40,17 @@ export const Footer: React.FC<FooterProps> = ({ onSelectView, onOpenBrandKit, on
               >
                 <span>Contact Us</span>
               </button>
+              <span className="text-slate-500">•</span>
+              <a
+                href="https://www.linkedin.com/company/mmbioatlas/?viewAsMember=true"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-[#0077b5] hover:text-sky-300 flex items-center gap-1 transition font-medium"
+                title="Follow M & M BioATLAS on LinkedIn"
+              >
+                <Linkedin className="w-3.5 h-3.5" />
+                <span>LinkedIn</span>
+              </a>
             </div>
           </div>
 
@@ -213,6 +225,16 @@ export const Footer: React.FC<FooterProps> = ({ onSelectView, onOpenBrandKit, on
             &copy; {new Date().getFullYear()} M &amp; M BioATLAS. All rights reserved.
           </div>
           <div className="flex items-center gap-4">
+            <a
+              href="https://www.linkedin.com/company/mmbioatlas/?viewAsMember=true"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-slate-300 hover:text-white transition"
+            >
+              <Linkedin className="w-3.5 h-3.5 text-[#0077b5]" />
+              <span>LinkedIn</span>
+            </a>
+            <span className="text-slate-600">•</span>
             <span className="flex items-center gap-1.5 text-slate-300">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
               <span>Strict Academic Confidentiality &amp; NDA Standard</span>

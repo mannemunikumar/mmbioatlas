@@ -1032,7 +1032,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
 
             <div className="grid grid-cols-2 gap-2.5 pt-1">
               <a
-                href="https://www.linkedin.com"
+                href="https://www.linkedin.com/company/mmbioatlas/?viewAsMember=true"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/10 hover:bg-[#0077b5] border border-white/10 transition group"

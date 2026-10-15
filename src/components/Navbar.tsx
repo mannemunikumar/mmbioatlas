@@ -94,7 +94,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="text-slate-400 font-medium text-[10px] uppercase tracking-wider">Connect:</span>
             <div className="flex items-center gap-1">
               <a
-                href="https://www.linkedin.com"
+                href="https://www.linkedin.com/company/mmbioatlas/?viewAsMember=true"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-1 rounded hover:bg-white/15 text-slate-300 hover:text-sky-300 transition"
@@ -338,7 +338,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div className="flex items-center justify-around px-4 py-2 bg-slate-50 rounded-xl mx-2 border border-slate-200/80">
               <a
-                href="https://www.linkedin.com"
+                href="https://www.linkedin.com/company/mmbioatlas/?viewAsMember=true"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-xs text-slate-700 hover:text-blue-700 font-medium"

@@ -357,7 +357,7 @@ export const InternationalResearchHub: React.FC<InternationalResearchHubProps> =
               </div>
             </div>
             <a
-              href="https://www.linkedin.com"
+              href="https://www.linkedin.com/company/mmbioatlas/?viewAsMember=true"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0077b5] hover:underline"
