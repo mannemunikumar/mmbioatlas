@@ -14,12 +14,12 @@ export const BrandKitModal: React.FC<BrandKitModalProps> = ({ isOpen, onClose })
   if (!isOpen) return null;
 
   const colorPalette = [
-    { name: 'Bio Cyan (Primary)', hex: '#06b6d4', desc: 'Single-cell fluorophores & accents' },
-    { name: 'Helix Blue', hex: '#3b82f6', desc: 'Macromolecular phosphodiester backbone' },
-    { name: 'Microbiome Emerald', hex: '#10b981', desc: 'Taxonomic abundance & metabolic nodes' },
-    { name: 'Ribosome Indigo', hex: '#6366f1', desc: 'Cellular ontology & deep clusters' },
-    { name: 'Obsidian Slate', hex: '#020617', desc: 'Deep background contrast' },
-    { name: 'Fluorophore Silver', hex: '#f8fafc', desc: 'High-contrast typography' },
+    { name: 'Institutional Navy', hex: '#0b2952', desc: 'M & M header typography and core branding' },
+    { name: 'Helix Sky Blue', hex: '#0284c7', desc: 'DNA double helix strand & globe ocean' },
+    { name: 'BioATLAS Emerald', hex: '#00897b', desc: 'BioATLAS gradient start & transcriptomics' },
+    { name: 'Helix Leaf Lime', hex: '#65a30d', desc: 'DNA counter-strand & BioATLAS gradient end' },
+    { name: 'Deep Midnight Slate', hex: '#071d33', desc: 'Institutional hero background & contrast' },
+    { name: 'Pure Surface White', hex: '#ffffff', desc: 'Primary document & card background' },
   ];
 
   const handleCopyHex = (hex: string) => {
@@ -28,44 +28,87 @@ export const BrandKitModal: React.FC<BrandKitModalProps> = ({ isOpen, onClose })
     setTimeout(() => setCopiedHex(null), 2000);
   };
 
-  const rawSvgCode = `<svg width="200" height="200" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  const rawSvgCode = `<svg width="400" height="400" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="helixGradPrimary" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#06b6d4" />
-      <stop offset="50%" stop-color="#3b82f6" />
-      <stop offset="100%" stop-color="#8b5cf6" />
+    <linearGradient id="globeContinentGrad" x1="0%" y1="20%" x2="100%" y2="80%">
+      <stop offset="0%" stop-color="#0b3b70" />
+      <stop offset="35%" stop-color="#0284c7" />
+      <stop offset="65%" stop-color="#0d9488" />
+      <stop offset="100%" stop-color="#65a30d" />
     </linearGradient>
-    <linearGradient id="helixGradSecondary" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#10b981" />
-      <stop offset="50%" stop-color="#06b6d4" />
-      <stop offset="100%" stop-color="#2563eb" />
+    <linearGradient id="dnaBlueStrand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="45%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
     </linearGradient>
-    <linearGradient id="nodeGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="dnaGreenStrand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a3e635" />
+      <stop offset="50%" stop-color="#65a30d" />
+      <stop offset="100%" stop-color="#15803d" />
+    </linearGradient>
+    <radialGradient id="sphereTopGrad" cx="35%" cy="35%" r="65%">
       <stop offset="0%" stop-color="#67e8f9" />
-      <stop offset="100%" stop-color="#06b6d4" />
+      <stop offset="50%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#075985" />
+    </radialGradient>
+    <radialGradient id="sphereBottomGrad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="55%" stop-color="#0369a1" />
+      <stop offset="100%" stop-color="#082f49" />
+    </radialGradient>
+    <linearGradient id="atlasTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00897b" />
+      <stop offset="50%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#65a30d" />
     </linearGradient>
-    <radialGradient id="haloCenter" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.25" />
-      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0" />
+    <radialGradient id="globeAtmosphere" cx="50%" cy="50%" r="50%">
+      <stop offset="70%" stop-color="#0284c7" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.16" />
     </radialGradient>
   </defs>
-  <circle cx="50" cy="50" r="44" fill="url(#haloCenter)" />
-  <polygon points="50,6 88,27 88,73 50,94 12,73 12,27" stroke="#334155" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-  <line x1="28" y1="36" x2="38" y2="46" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" opacity="0.6" />
-  <line x1="38" y1="46" x2="50" y2="34" stroke="#10b981" stroke-width="2" stroke-linecap="round" opacity="0.6" />
-  <line x1="50" y1="34" x2="62" y2="46" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" opacity="0.6" />
-  <line x1="62" y1="46" x2="72" y2="36" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" opacity="0.6" />
-  <line x1="35" y1="64" x2="50" y2="60" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" opacity="0.5" />
-  <line x1="50" y1="60" x2="65" y2="64" stroke="#10b981" stroke-width="2" stroke-linecap="round" opacity="0.5" />
-  <path d="M 18,72 Q 22,24 36,26 T 50,56 T 64,26 Q 78,24 82,72" fill="none" stroke="url(#helixGradPrimary)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M 18,34 Q 28,78 40,68 T 50,42 T 60,68 Q 72,78 82,34" fill="none" stroke="url(#helixGradSecondary)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9" />
-  <path d="M 32,54 L 42,34 L 50,48 L 58,34 L 68,54" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.95" />
-  <circle cx="36" cy="26" r="4" fill="url(#nodeGlow)" stroke="#0f172a" stroke-width="1.5" />
-  <circle cx="64" cy="26" r="4" fill="#a78bfa" stroke="#0f172a" stroke-width="1.5" />
-  <circle cx="50" cy="48" r="4.5" fill="#34d399" stroke="#0f172a" stroke-width="1.5" />
-  <circle cx="18" cy="72" r="3.5" fill="#38bdf8" stroke="#0f172a" stroke-width="1.5" />
-  <circle cx="82" cy="72" r="3.5" fill="#c084fc" stroke="#0f172a" stroke-width="1.5" />
-  <circle cx="50" cy="56" r="3" fill="#67e8f9" />
+  <circle cx="50" cy="46" r="42" fill="url(#globeAtmosphere)" stroke="#0b3b70" stroke-width="1.2" opacity="0.35" />
+  <line x1="8" y1="46" x2="92" y2="46" stroke="#0b3b70" stroke-width="0.8" opacity="0.25" />
+  <ellipse cx="50" cy="28" rx="37" ry="7" fill="none" stroke="#0b3b70" stroke-width="0.7" opacity="0.22" />
+  <ellipse cx="50" cy="64" rx="37" ry="7" fill="none" stroke="#0b3b70" stroke-width="0.7" opacity="0.22" />
+  <ellipse cx="50" cy="46" rx="17" ry="42" fill="none" stroke="#0b3b70" stroke-width="0.75" opacity="0.22" />
+  <ellipse cx="50" cy="46" rx="31" ry="42" fill="none" stroke="#0b3b70" stroke-width="0.75" opacity="0.22" />
+  <g fill="url(#globeContinentGrad)" opacity="0.82">
+    <path d="M 23,20 Q 26,16 33,18 Q 39,20 37,26 Q 34,30 29,32 Q 26,36 28,40 Q 24,41 21,36 Q 19,28 23,20 Z" />
+    <path d="M 31,46 Q 37,48 39,54 Q 40,62 35,70 Q 32,72 33,67 Q 31,60 29,54 Z" />
+    <path d="M 46,22 Q 52,20 55,25 Q 52,30 47,28 Z" />
+    <path d="M 48,32 Q 56,31 58,38 Q 56,46 54,52 Q 50,56 48,50 Q 46,40 48,32 Z" />
+    <path d="M 57,20 Q 68,16 78,22 Q 82,28 76,34 Q 70,36 65,32 Q 60,28 57,20 Z" />
+    <path d="M 72,52 Q 80,50 82,56 Q 80,62 74,61 Q 71,57 72,52 Z" />
+  </g>
+  <g stroke-width="2.8" stroke-linecap="round">
+    <line x1="42" y1="16" x2="49" y2="16" stroke="#0284c7" />
+    <line x1="51" y1="16" x2="58" y2="16" stroke="#65a30d" />
+    <line x1="40" y1="21" x2="49" y2="21" stroke="#0284c7" />
+    <line x1="51" y1="21" x2="60" y2="21" stroke="#65a30d" />
+    <line x1="43" y1="26" x2="49" y2="26" stroke="#0284c7" />
+    <line x1="51" y1="26" x2="57" y2="26" stroke="#65a30d" />
+    <line x1="43" y1="39" x2="49" y2="39" stroke="#0284c7" />
+    <line x1="51" y1="39" x2="57" y2="39" stroke="#65a30d" />
+    <line x1="40" y1="44" x2="49" y2="44" stroke="#0284c7" />
+    <line x1="51" y1="44" x2="60" y2="44" stroke="#65a30d" />
+    <line x1="42" y1="50" x2="49" y2="50" stroke="#0284c7" />
+    <line x1="51" y1="50" x2="58" y2="50" stroke="#65a30d" />
+    <line x1="43" y1="63" x2="49" y2="63" stroke="#0284c7" />
+    <line x1="51" y1="63" x2="57" y2="63" stroke="#65a30d" />
+    <line x1="40" y1="69" x2="49" y2="69" stroke="#0284c7" />
+    <line x1="51" y1="69" x2="60" y2="69" stroke="#65a30d" />
+    <line x1="43" y1="74" x2="49" y2="74" stroke="#0284c7" />
+    <line x1="51" y1="74" x2="57" y2="74" stroke="#65a30d" />
+  </g>
+  <g fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 50,6 Q 38,10 39,21 Q 40,31 50,34 Q 61,37 61,46 Q 61,55 50,59 Q 39,63 39,72 Q 39,81 50,86" stroke="url(#dnaBlueStrand)" />
+    <path d="M 50,6 Q 62,10 61,21 Q 60,31 50,34 Q 39,37 39,46 Q 39,55 50,59 Q 61,63 61,72 Q 61,81 50,86" stroke="url(#dnaGreenStrand)" />
+  </g>
+  <circle cx="50" cy="5" r="4.5" fill="url(#sphereTopGrad)" />
+  <circle cx="50" cy="87" r="4.5" fill="url(#sphereBottomGrad)" />
+  <text x="50" y="102" text-anchor="middle" fill="#0b2952" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" font-weight="800" letter-spacing="2">M &amp; M</text>
+  <text x="34" y="115" text-anchor="end" fill="#0b2952" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="900" letter-spacing="-0.5">Bio</text>
+  <text x="35" y="115" text-anchor="start" fill="url(#atlasTextGrad)" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="900" letter-spacing="-0.5">ATLAS</text>
 </svg>`;
 
   const handleDownloadSvg = () => {
@@ -126,28 +169,32 @@ export const BrandKitModal: React.FC<BrandKitModalProps> = ({ isOpen, onClose })
               <span>Vector Emblem Showcase</span>
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Dark canvas presentation */}
-              <div className="bg-slate-950 border border-slate-800 rounded-xl p-6 flex flex-col items-center justify-center text-center">
-                <Logo size="lg" variant="full" />
-                <span className="text-[11px] font-mono text-slate-400 mt-4">Full Primary Horizontal (Dark UI)</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Official Stacked Emblem (Matching uploaded brand mark) */}
+              <div className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col items-center justify-center text-center shadow-xs">
+                <Logo size="lg" variant="stacked" theme="light" />
+                <span className="text-[11px] font-mono text-slate-600 mt-3 font-semibold">Official Emblem (Stacked)</span>
               </div>
 
-              {/* Light canvas presentation */}
-              <div className="bg-slate-100 border border-slate-300 rounded-xl p-6 flex flex-col items-center justify-center text-center">
-                <div className="p-2 bg-slate-900 rounded-lg inline-block">
-                  <Logo size="lg" variant="full" />
-                </div>
-                <span className="text-[11px] font-mono text-slate-600 mt-4">High Contrast Inverted Lockup</span>
+              {/* Light canvas horizontal */}
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col items-center justify-center text-center shadow-xs">
+                <Logo size="md" variant="full" theme="light" />
+                <span className="text-[11px] font-mono text-slate-500 mt-4">Header Lockup (Light)</span>
+              </div>
+
+              {/* Dark canvas horizontal */}
+              <div className="bg-slate-950 border border-slate-800 rounded-xl p-5 flex flex-col items-center justify-center text-center">
+                <Logo size="md" variant="full" theme="dark" />
+                <span className="text-[11px] font-mono text-slate-400 mt-4">Footer Lockup (Dark)</span>
               </div>
 
               {/* Icon Only & Badge */}
-              <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-6 flex flex-col items-center justify-center gap-3">
-                <div className="flex items-center gap-4">
-                  <Logo size="lg" variant="icon" />
-                  <Logo variant="badge" />
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col items-center justify-center gap-2">
+                <div className="flex items-center gap-3">
+                  <Logo size="md" variant="icon" />
+                  <Logo variant="badge" theme="dark" />
                 </div>
-                <span className="text-[11px] font-mono text-slate-400 mt-2">Standalone Vector Emblem & Badge</span>
+                <span className="text-[11px] font-mono text-slate-400 mt-2">Icon &amp; Pill Badge</span>
               </div>
             </div>
 

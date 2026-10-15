@@ -1,0 +1,164 @@
+<svg width="400" height="400" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    {/* Continents Blue-to-Green Gradient */}
+    <linearGradient id="globeContinentGrad" x1="0%" y1="20%" x2="100%" y2="80%">
+      <stop offset="0%" stop-color="#0b3b70" />
+      <stop offset="35%" stop-color="#0284c7" />
+      <stop offset="65%" stop-color="#0d9488" />
+      <stop offset="100%" stop-color="#65a30d" />
+    </linearGradient>
+
+    {/* DNA Blue Strand 3D Gradient */}
+    <linearGradient id="dnaBlueStrand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="45%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+
+    {/* DNA Green Strand 3D Gradient */}
+    <linearGradient id="dnaGreenStrand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a3e635" />
+      <stop offset="50%" stop-color="#65a30d" />
+      <stop offset="100%" stop-color="#15803d" />
+    </linearGradient>
+
+    {/* Sphere Top Node Gradient */}
+    <radialGradient id="sphereTopGrad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#67e8f9" />
+      <stop offset="50%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#075985" />
+    </radialGradient>
+
+    {/* Sphere Bottom Node Gradient */}
+    <radialGradient id="sphereBottomGrad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="55%" stop-color="#0369a1" />
+      <stop offset="100%" stop-color="#082f49" />
+    </radialGradient>
+
+    {/* Atlas Text Gradient */}
+    <linearGradient id="atlasTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00897b" />
+      <stop offset="50%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#65a30d" />
+    </linearGradient>
+
+    {/* Globe Atmosphere Glow */}
+    <radialGradient id="globeAtmosphere" cx="50%" cy="50%" r="50%">
+      <stop offset="70%" stop-color="#0284c7" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.16" />
+    </radialGradient>
+
+    {/* Drop shadow filter */}
+    <filter id="dnaShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#000000" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  {/* GLOBE BASE CIRCLE & ATMOSPHERE */}
+  <circle cx="50" cy="46" r="42" fill="url(#globeAtmosphere)" />
+  <circle cx="50" cy="46" r="42" stroke="#0b3b70" stroke-width="1.2" opacity="0.35" />
+
+  {/* LATITUDE & LONGITUDE GRID LINES */}
+  <line x1="8" y1="46" x2="92" y2="46" stroke="#0b3b70" stroke-width="0.8" opacity="0.25" />
+  <ellipse cx="50" cy="28" rx="37" ry="7" fill="none" stroke="#0b3b70" stroke-width="0.7" opacity="0.22" />
+  <ellipse cx="50" cy="64" rx="37" ry="7" fill="none" stroke="#0b3b70" stroke-width="0.7" opacity="0.22" />
+  <ellipse cx="50" cy="15" rx="25" ry="4.5" fill="none" stroke="#0b3b70" stroke-width="0.6" opacity="0.18" />
+  <ellipse cx="50" cy="77" rx="25" ry="4.5" fill="none" stroke="#0b3b70" stroke-width="0.6" opacity="0.18" />
+
+  <ellipse cx="50" cy="46" rx="17" ry="42" fill="none" stroke="#0b3b70" stroke-width="0.75" opacity="0.22" />
+  <ellipse cx="50" cy="46" rx="31" ry="42" fill="none" stroke="#0b3b70" stroke-width="0.75" opacity="0.22" />
+  <line x1="50" y1="4" x2="50" y2="88" stroke="#0b3b70" stroke-width="0.8" opacity="0.2" />
+
+  {/* CONTINENTS */}
+  <g fill="url(#globeContinentGrad)" opacity="0.82">
+    <path d="M 23,20 Q 26,16 33,18 Q 39,20 37,26 Q 34,30 29,32 Q 26,36 28,40 Q 24,41 21,36 Q 19,28 23,20 Z" />
+    <path d="M 37,12 Q 41,10 44,13 Q 42,16 39,16 Z" />
+    <path d="M 31,46 Q 37,48 39,54 Q 40,62 35,70 Q 32,72 33,67 Q 31,60 29,54 Z" />
+    <path d="M 46,22 Q 52,20 55,25 Q 52,30 47,28 Z" />
+    <path d="M 48,32 Q 56,31 58,38 Q 56,46 54,52 Q 50,56 48,50 Q 46,40 48,32 Z" />
+    <path d="M 57,20 Q 68,16 78,22 Q 82,28 76,34 Q 70,36 65,32 Q 60,28 57,20 Z" />
+    <path d="M 68,40 Q 72,38 73,42 Q 70,45 68,42 Z" />
+    <path d="M 72,52 Q 80,50 82,56 Q 80,62 74,61 Q 71,57 72,52 Z" />
+  </g>
+
+  {/* DNA BASE-PAIR RUNGS */}
+  <g filter="url(#dnaShadow)" stroke-width="2.8" stroke-linecap="round">
+    <line x1="42" y1="16" x2="49" y2="16" stroke="#0284c7" />
+    <line x1="51" y1="16" x2="58" y2="16" stroke="#65a30d" />
+    <line x1="40" y1="21" x2="49" y2="21" stroke="#0284c7" />
+    <line x1="51" y1="21" x2="60" y2="21" stroke="#65a30d" />
+    <line x1="43" y1="26" x2="49" y2="26" stroke="#0284c7" />
+    <line x1="51" y1="26" x2="57" y2="26" stroke="#65a30d" />
+
+    <line x1="43" y1="39" x2="49" y2="39" stroke="#0284c7" />
+    <line x1="51" y1="39" x2="57" y2="39" stroke="#65a30d" />
+    <line x1="40" y1="44" x2="49" y2="44" stroke="#0284c7" />
+    <line x1="51" y1="44" x2="60" y2="44" stroke="#65a30d" />
+    <line x1="42" y1="50" x2="49" y2="50" stroke="#0284c7" />
+    <line x1="51" y1="50" x2="58" y2="50" stroke="#65a30d" />
+
+    <line x1="43" y1="63" x2="49" y2="63" stroke="#0284c7" />
+    <line x1="51" y1="63" x2="57" y2="63" stroke="#65a30d" />
+    <line x1="40" y1="69" x2="49" y2="69" stroke="#0284c7" />
+    <line x1="51" y1="69" x2="60" y2="69" stroke="#65a30d" />
+    <line x1="43" y1="74" x2="49" y2="74" stroke="#0284c7" />
+    <line x1="51" y1="74" x2="57" y2="74" stroke="#65a30d" />
+  </g>
+
+  {/* DNA DOUBLE HELIX STRANDS */}
+  <g filter="url(#dnaShadow)" fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path
+      d="M 50,6 Q 38,10 39,21 Q 40,31 50,34 Q 61,37 61,46 Q 61,55 50,59 Q 39,63 39,72 Q 39,81 50,86"
+      stroke="url(#dnaBlueStrand)"
+    />
+    <path
+      d="M 50,6 Q 62,10 61,21 Q 60,31 50,34 Q 39,37 39,46 Q 39,55 50,59 Q 61,63 61,72 Q 61,81 50,86"
+      stroke="url(#dnaGreenStrand)"
+    />
+  </g>
+
+  {/* SPHERICAL TERMINAL CAPS */}
+  <circle cx="50" cy="5" r="4.5" fill="url(#sphereTopGrad)" filter="url(#dnaShadow)" />
+  <circle cx="50" cy="87" r="4.5" fill="url(#sphereBottomGrad)" filter="url(#dnaShadow)" />
+
+  {/* BRAND TYPOGRAPHY: M & M */}
+  <text
+    x="50"
+    y="102"
+    text-anchor="middle"
+    fill="#0b2952"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="8.5"
+    font-weight="800"
+    letter-spacing="2"
+  >
+    M &amp; M
+  </text>
+
+  {/* BRAND TYPOGRAPHY: BioATLAS */}
+  <text
+    x="34"
+    y="115"
+    text-anchor="end"
+    fill="#0b2952"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="14"
+    font-weight="900"
+    letter-spacing="-0.5"
+  >
+    Bio
+  </text>
+  <text
+    x="35"
+    y="115"
+    text-anchor="start"
+    fill="url(#atlasTextGrad)"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="14"
+    font-weight="900"
+    letter-spacing="-0.5"
+  >
+    ATLAS
+  </text>
+</svg>
