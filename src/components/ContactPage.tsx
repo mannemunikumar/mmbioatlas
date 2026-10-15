@@ -1,3 +1,50 @@
+/**
+ * ============================================================================
+ * GOOGLE APPS SCRIPT WEB APP INTEGRATION: GOOGLE SHEETS & DRIVE
+ * ============================================================================
+ * Backend Code.gs for receiving submissions, storing rows in Google Sheets,
+ * and uploading base64-encoded file attachments to Google Drive:
+ * 
+ * ```javascript
+ * function doPost(e) {
+ *   try {
+ *     const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ *     const data = JSON.parse(e.postData.contents);
+ *     let fileUrl = "";
+ * 
+ *     // If an attachment is included, save it to Google Drive
+ *     if (data.fileData && data.fileName) {
+ *       const folder = DriveApp.getRootFolder(); 
+ *       const decoded = Utilities.base64Decode(data.fileData.split(",")[1]);
+ *       const blob = Utilities.newBlob(decoded, data.fileType || "application/octet-stream", data.fileName);
+ *       const file = folder.createFile(blob);
+ *       fileUrl = file.getUrl();
+ *     }
+ * 
+ *     sheet.appendRow([
+ *       new Date(data.timestamp || Date.now()),
+ *       data.name || data.fullName || "",
+ *       data.email || "",
+ *       data.category || data.serviceCategory || "",
+ *       data.rating || "",
+ *       data.comments || data.message || "",
+ *       fileUrl
+ *     ]);
+ * 
+ *     return ContentService.createTextOutput(
+ *       JSON.stringify({ status: "success", message: "Recorded", fileUrl: fileUrl })
+ *     ).setMimeType(ContentService.MimeType.JSON);
+ * 
+ *   } catch (error) {
+ *     return ContentService.createTextOutput(
+ *       JSON.stringify({ status: "error", error: error.toString() })
+ *     ).setMimeType(ContentService.MimeType.JSON);
+ *   }
+ * }
+ * ```
+ * ============================================================================
+ */
+
 import React, { useState } from 'react';
 import { 
   Mail, 
@@ -23,7 +70,14 @@ import {
   UserCheck,
   Award,
   Copy,
-  Check
+  Check,
+  UploadCloud,
+  FileText,
+  XCircle,
+  Star,
+  AlertTriangle,
+  Loader2,
+  RotateCcw
 } from 'lucide-react';
 import { AtlasView } from '../types';
 import { LEADERSHIP_CONTACT } from '../data/organizationData';
@@ -35,6 +89,12 @@ import {
   getGmailWebComposeUrl,
   getWhatsAppUrl
 } from '../utils/inquiryEmail';
+import {
+  SCRIPT_URL,
+  submitToGoogleAppsScript,
+  convertFileToBase64,
+  FormSubmissionPayload
+} from '../utils/googleAppsScriptService';
 
 interface ContactPageProps {
   onSelectView?: (view: AtlasView) => void;
@@ -43,19 +103,71 @@ interface ContactPageProps {
 export const ContactPage: React.FC<ContactPageProps> = ({
   onSelectView,
 }) => {
+  const [formMode, setFormMode] = useState<'inquiry' | 'feedback'>('inquiry');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [institution, setInstitution] = useState('');
   const [serviceCategory, setServiceCategory] = useState('cro');
+  const [feedbackCategory, setFeedbackCategory] = useState('Platform Usability & Workflows');
+  const [rating, setRating] = useState<number>(5);
   const [timezone, setTimezone] = useState('EST');
   const [fundingType, setFundingType] = useState('grant');
   const [urgency, setUrgency] = useState('standard');
   const [needsNda, setNeedsNda] = useState(true);
   const [message, setMessage] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // File upload state (converted to Base64 via FileReader)
+  const [fileAttachment, setFileAttachment] = useState<{
+    file: File;
+    base64: string;
+    fileName: string;
+    fileType: string;
+    sizeFormatted: string;
+  } | null>(null);
+  const [isProcessingFile, setIsProcessingFile] = useState(false);
+  const [fileError, setFileError] = useState<string | null>(null);
+
+  // Submission UX States
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [savedFileUrl, setSavedFileUrl] = useState<string | null>(null);
+  const [isSimulated, setIsSimulated] = useState(false);
+
   const [copied, setCopied] = useState(false);
   const [links, setLinks] = useState<{ mailtoUrl: string; gmailUrl: string; waUrl: string } | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0];
+    if (!selected) return;
+
+    setFileError(null);
+    setIsProcessingFile(true);
+
+    try {
+      const encoded = await convertFileToBase64(selected);
+      setFileAttachment({
+        file: selected,
+        base64: encoded.fileData,
+        fileName: encoded.fileName,
+        fileType: encoded.fileType,
+        sizeFormatted: (selected.size / (1024 * 1024)).toFixed(2) + ' MB',
+      });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Error reading selected file';
+      setFileError(msg);
+      setFileAttachment(null);
+    } finally {
+      setIsProcessingFile(false);
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setFileAttachment(null);
+    setFileError(null);
+  };
 
   const faqs = [
     {
@@ -76,47 +188,99 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    const isFeedback = formMode === 'feedback';
+    const payloadCategory = isFeedback ? `Feedback: ${feedbackCategory}` : serviceCategory;
+    const timeline = urgency === 'immediate' ? 'Immediate Priority (< 10 Days)' : urgency === 'expedited' ? 'Expedited (2-3 Weeks)' : 'Standard (4-6 Weeks)';
+
+    const submissionPayload: FormSubmissionPayload = {
+      name: fullName,
+      email,
+      category: payloadCategory,
+      rating: isFeedback ? rating : undefined,
+      comments: message,
+      institution: institution || (isFeedback ? 'Independent Researcher' : 'Not Specified'),
+      urgency,
+      timeline,
+      fundingType,
+      needsNda: isFeedback ? false : needsNda,
+      source: isFeedback ? 'Website User Feedback & Review' : 'Contact & Project Scoping Form',
+      timestamp: new Date().toISOString(),
+      fileName: fileAttachment?.fileName,
+      fileType: fileAttachment?.fileType,
+      fileData: fileAttachment?.base64,
+    };
+
+    // Prepare multi-channel direct dispatch backup
+    const dispatched = dispatchInquiry({
       fullName,
       email,
       institution,
-      serviceCategory,
-      timeline: urgency === 'immediate' ? 'Immediate Priority (< 10 Days)' : urgency === 'expedited' ? 'Expedited (2-3 Weeks)' : 'Standard (4-6 Weeks)',
+      serviceCategory: payloadCategory,
+      timeline,
       fundingType,
       urgency,
       needsNda,
       message,
-      source: 'Contact & Project Scoping Page'
-    };
-    const dispatched = dispatchInquiry(payload);
+      source: submissionPayload.source,
+    });
     setLinks(dispatched);
-    setIsSubmitted(true);
 
-    if (typeof window !== 'undefined' && 'gtag' in window && typeof (window as unknown as { gtag: Function }).gtag === 'function') {
-      (window as unknown as { gtag: Function }).gtag('event', 'generate_lead', {
-        event_category: 'ContactForm',
-        event_label: serviceCategory,
-        service_category: serviceCategory,
-        urgency,
-        institution: institution || 'Not Specified',
-      });
+    // Stream directly to Google Apps Script Web App (POST text/plain)
+    const result = await submitToGoogleAppsScript(submissionPayload);
+    setIsSubmitting(false);
+
+    if (result.success) {
+      setSubmitSuccess(true);
+      setSuccessMessage(result.message || 'Thank you! Your feedback has been saved.');
+      setIsSimulated(!!result.isSimulated);
+      setSavedFileUrl(result.fileUrl || null);
+
+      if (typeof window !== 'undefined' && 'gtag' in window && typeof (window as unknown as { gtag: Function }).gtag === 'function') {
+        (window as unknown as { gtag: Function }).gtag('event', isFeedback ? 'feedback_submission' : 'generate_lead', {
+          event_category: isFeedback ? 'Feedback' : 'ContactForm',
+          event_label: payloadCategory,
+          service_category: payloadCategory,
+          rating: isFeedback ? rating : undefined,
+          institution: institution || 'Not Specified',
+        });
+      }
+    } else {
+      setSubmitError(result.error || 'Failed to communicate with Google Apps Script endpoint.');
     }
   };
 
+  const handleResetForm = () => {
+    setSubmitSuccess(false);
+    setSubmitError(null);
+    setSuccessMessage('');
+    setSavedFileUrl(null);
+    setFullName('');
+    setEmail('');
+    setInstitution('');
+    setMessage('');
+    setFileAttachment(null);
+    setFileError(null);
+    setRating(5);
+  };
+
   const handleCopy = () => {
+    const isFeedback = formMode === 'feedback';
     const payload = {
       fullName,
       email,
       institution,
-      serviceCategory,
+      serviceCategory: isFeedback ? `Feedback: ${feedbackCategory}` : serviceCategory,
       timeline: urgency === 'immediate' ? 'Immediate Priority (< 10 Days)' : urgency === 'expedited' ? 'Expedited (2-3 Weeks)' : 'Standard (4-6 Weeks)',
       fundingType,
       urgency,
-      needsNda,
+      needsNda: isFeedback ? false : needsNda,
       message,
-      source: 'Contact & Project Scoping Page'
+      source: isFeedback ? 'Website User Feedback & Review' : 'Contact & Project Scoping Form'
     };
     navigator.clipboard.writeText(buildInquirySummary(payload));
     setCopied(true);
@@ -287,31 +451,130 @@ export const ContactPage: React.FC<ContactPageProps> = ({
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Form (7 cols) */}
         <div className="lg:col-span-7 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-6">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-              Submit a Research Scoping Inquiry
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Provide project details below to receive a feasibility assessment and itemized computational milestone proposal.
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
+            <div>
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                {formMode === 'inquiry' ? 'Submit a Research Scoping Inquiry' : 'Scientific Feedback & User Review'}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                {formMode === 'inquiry'
+                  ? 'Provide project details below to stream directly into our Google Sheets and Drive workflow.'
+                  : 'Share your feedback, report observations, or review scientific deliverables directly into our records.'}
+              </p>
+            </div>
+
+            {/* Mode Switcher Tabs */}
+            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200 shrink-0 self-start sm:self-auto">
+              <button
+                type="button"
+                onClick={() => setFormMode('inquiry')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  formMode === 'inquiry'
+                    ? 'bg-white text-[#0b3b70] shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                Project Scope
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormMode('feedback')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  formMode === 'feedback'
+                    ? 'bg-white text-[#0b3b70] shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                User Feedback
+              </button>
+            </div>
           </div>
 
-          {isSubmitted ? (
+          {/* Inline Error Alert with Retry Button */}
+          {submitError && (
+            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 space-y-2.5 animate-fadeIn">
+              <div className="flex items-start gap-2.5">
+                <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <div className="text-xs font-bold uppercase tracking-wider text-rose-700">
+                    Google Apps Script Dispatch Error
+                  </div>
+                  <div className="text-xs text-rose-800 leading-relaxed font-mono break-all">
+                    {submitError}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="px-3.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold flex items-center gap-1.5 transition shadow-xs disabled:opacity-50"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Retry Submission</span>
+                </button>
+
+                <a
+                  href={links?.gmailUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-white hover:bg-rose-100 text-rose-700 text-xs font-medium border border-rose-200 transition"
+                >
+                  Send via Gmail Instead
+                </a>
+              </div>
+            </div>
+          )}
+
+          {submitSuccess ? (
             <div className="p-6 sm:p-8 rounded-2xl bg-slate-900 border border-slate-800 text-white space-y-5 animate-fadeIn">
               <div className="text-center space-y-2">
                 <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white">Inquiry Prepared &amp; Dispatched!</h3>
+                <h3 className="text-xl sm:text-2xl font-bold text-white">
+                  {formMode === 'feedback' ? 'Thank you! Your feedback has been saved.' : 'Inquiry Successfully Saved & Recorded!'}
+                </h3>
                 <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                  Thank you, <strong className="text-cyan-300 font-semibold">{fullName || 'Researcher'}</strong>. Your scoping inquiry has been routed to the scientific leadership desk at <strong className="text-white">M &amp; M BioATLAS</strong>.
+                  {successMessage || 'Your record has been logged in Google Sheets and routed to the research leadership team.'}
                 </p>
               </div>
+
+              {/* Uploaded File Link if Available */}
+              {savedFileUrl && (
+                <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-800/80 text-center">
+                  <a
+                    href={savedFileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-300 hover:text-emerald-200 underline transition"
+                  >
+                    <FileText className="w-4 h-4" />
+                    <span>View Uploaded File Attachment in Google Drive</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              )}
+
+              {/* Sandbox notice if simulated */}
+              {isSimulated && (
+                <div className="p-3 rounded-xl bg-blue-950/60 border border-blue-800/60 text-xs text-blue-200 space-y-1">
+                  <div className="font-semibold text-cyan-300 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Google Apps Script Endpoint Notice</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300">
+                    Your test entry was logged in local development storage. To stream directly to live Google Sheets and Drive, deploy the provided <code className="text-cyan-200 bg-black/40 px-1 py-0.5 rounded">Code.gs</code> Web App and update <code className="text-cyan-200 bg-black/40 px-1 py-0.5 rounded">SCRIPT_URL</code>.
+                  </p>
+                </div>
+              )}
 
               {/* Recipient Verification List */}
               <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-left space-y-2">
                 <div className="text-[11px] font-mono text-cyan-400 uppercase tracking-wider font-semibold">
-                  Delivered / Addressed To:
+                  Addressed To Leadership Team:
                 </div>
                 <ul className="text-xs font-mono text-slate-300 space-y-1.5">
                   {INQUIRY_RECIPIENT_EMAILS.map((recipient) => (
@@ -326,7 +589,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               {/* Multi-Channel Delivery Buttons */}
               <div className="space-y-2.5 pt-1">
                 <div className="text-xs text-slate-300 font-medium text-center">
-                  To ensure instant receipt, open directly via your preferred application:
+                  To ensure instant confirmation, you may also open via direct channels:
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -368,20 +631,17 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                     className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition"
                   >
                     {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                    <span>{copied ? 'Copied to Clipboard!' : 'Copy Inquiry Summary'}</span>
+                    <span>{copied ? 'Copied to Clipboard!' : 'Copy Summary'}</span>
                   </button>
                 </div>
               </div>
 
               <div className="pt-2 text-center">
                 <button
-                  onClick={() => {
-                    setIsSubmitted(false);
-                    setMessage('');
-                  }}
+                  onClick={handleResetForm}
                   className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-mono font-medium transition"
                 >
-                  Submit Another Inquiry
+                  Submit Another Response
                 </button>
               </div>
             </div>
@@ -404,7 +664,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-slate-700">
-                    Institutional Email Address *
+                    Email Address *
                   </label>
                   <input
                     type="email"
@@ -420,11 +680,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-slate-700">
-                    University / Organization / Company *
+                    University / Organization / Company {formMode === 'inquiry' ? '*' : '(Optional)'}
                   </label>
                   <input
                     type="text"
-                    required
+                    required={formMode === 'inquiry'}
                     placeholder="e.g. BioPharma Labs / Central University"
                     value={institution}
                     onChange={(e) => setInstitution(e.target.value)}
@@ -434,113 +694,264 @@ export const ContactPage: React.FC<ContactPageProps> = ({
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-slate-700">
-                    Primary Service Focus *
+                    {formMode === 'inquiry' ? 'Primary Service Focus *' : 'Feedback Category *'}
                   </label>
-                  <select
-                    value={serviceCategory}
-                    onChange={(e) => setServiceCategory(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
-                  >
-                    <option value="cro">In Silico Drug Discovery &amp; Molecular Dynamics (CRO)</option>
-                    <option value="genomics">Next-Generation Sequencing &amp; RNA-Seq Pipelines</option>
-                    <option value="writing">Academic Writing, Thesis &amp; Q1 Manuscripts</option>
-                    <option value="statistics">Biostatistics, Sample Size &amp; Trial Modeling</option>
-                    <option value="training">Training Program / Fellowship Enrollment</option>
-                    <option value="mou">Institutional MoU / University Grant Partnership</option>
-                  </select>
+                  {formMode === 'inquiry' ? (
+                    <select
+                      value={serviceCategory}
+                      onChange={(e) => setServiceCategory(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
+                    >
+                      <option value="cro">In Silico Drug Discovery &amp; Molecular Dynamics (CRO)</option>
+                      <option value="genomics">Next-Generation Sequencing &amp; RNA-Seq Pipelines</option>
+                      <option value="writing">Academic Writing, Thesis &amp; Q1 Manuscripts</option>
+                      <option value="statistics">Biostatistics, Sample Size &amp; Trial Modeling</option>
+                      <option value="training">Training Program / Fellowship Enrollment</option>
+                      <option value="mou">Institutional MoU / University Grant Partnership</option>
+                    </select>
+                  ) : (
+                    <select
+                      value={feedbackCategory}
+                      onChange={(e) => setFeedbackCategory(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
+                    >
+                      <option value="Platform Usability & Workflows">Platform Usability &amp; Visual Experience</option>
+                      <option value="CRO & Molecular Simulations">Molecular Dynamics (GROMACS) &amp; Docking</option>
+                      <option value="NGS RNA-Seq Pipeline Quality">NGS &amp; RNA-Seq Pipeline Performance</option>
+                      <option value="Academic Writing & Peer-Review">Academic Manuscript &amp; Thesis Support</option>
+                      <option value="Bioinformatics Training Experience">Training Cohort &amp; Mentorship Quality</option>
+                      <option value="Data Security & Integrity">Data Privacy &amp; GLP Compliance</option>
+                      <option value="General Suggestion / Request">Feature Request &amp; General Suggestion</option>
+                    </select>
+                  )}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-                    <Globe className="w-3.5 h-3.5 text-blue-600" />
-                    <span>Preferred Consultation Timezone</span>
-                  </label>
-                  <select
-                    value={timezone}
-                    onChange={(e) => setTimezone(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 font-medium"
-                  >
-                    <option value="EST">North America East (EST / UTC-5)</option>
-                    <option value="PST">North America West (PST / UTC-8)</option>
-                    <option value="GMT">UK / Ireland (GMT/BST / UTC+0/+1)</option>
-                    <option value="CET">Central Europe (CET / UTC+1)</option>
-                    <option value="IST">India Standard Time (IST / UTC+5:30)</option>
-                    <option value="SGT">Singapore / East Asia (SGT / UTC+8)</option>
-                    <option value="AEST">Australia (AEST / UTC+10)</option>
-                  </select>
-                </div>
+              {/* Star Rating Widget (For Feedback Mode) */}
+              {formMode === 'feedback' && (
+                <div className="p-3.5 rounded-2xl bg-amber-50/60 border border-amber-200/80 space-y-2 animate-fadeIn">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-amber-900 flex items-center gap-1.5">
+                      <Star className="w-3.5 h-3.5 text-amber-600 fill-amber-500" />
+                      <span>Experience Rating (Recorded in Google Sheets Column E)</span>
+                    </label>
+                    <span className="text-xs font-semibold text-amber-800">
+                      {rating} / 5 Stars
+                    </span>
+                  </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700">
-                    Procurement / Funding Vehicle
-                  </label>
-                  <select
-                    value={fundingType}
-                    onChange={(e) => setFundingType(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
-                  >
-                    <option value="grant">University / Institute Grant (NIH, Horizon, DBT, DST)</option>
-                    <option value="po">Institutional Purchase Order (PO / Wire in USD, EUR, GBP)</option>
-                    <option value="corporate">Biotech Startup / Corporate R&amp;D Invoicing</option>
-                    <option value="fellowship">Individual Fellowship / Thesis Self-Funded</option>
-                    <option value="los">Request Grant Co-PI / Letter of Support (LOS)</option>
-                  </select>
+                  <div className="flex items-center gap-2">
+                    {[1, 2, 3, 4, 5].map((starValue) => (
+                      <button
+                        type="button"
+                        key={starValue}
+                        onClick={() => setRating(starValue)}
+                        className="p-1 hover:scale-110 transition-transform focus:outline-hidden"
+                        title={`${starValue} Stars`}
+                      >
+                        <Star
+                          className={`w-6 h-6 transition-colors ${
+                            starValue <= rating
+                              ? 'text-amber-500 fill-amber-400'
+                              : 'text-slate-300'
+                          }`}
+                        />
+                      </button>
+                    ))}
+                    <span className="text-xs text-amber-700 ml-2 font-medium">
+                      {rating === 5 && 'Outstanding Excellence'}
+                      {rating === 4 && 'Very Good Performance'}
+                      {rating === 3 && 'Satisfactory Experience'}
+                      {rating === 2 && 'Needs Improvement'}
+                      {rating === 1 && 'Substantial Rework Needed'}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700">
-                    Desired Delivery Timeline
-                  </label>
-                  <select
-                    value={urgency}
-                    onChange={(e) => setUrgency(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
-                  >
-                    <option value="urgent">Urgent (&lt; 2 Weeks)</option>
-                    <option value="standard">Standard (2 - 4 Weeks)</option>
-                    <option value="flexible">Flexible / Ongoing Semester Cohort</option>
-                  </select>
-                </div>
+              {/* Additional In-depth Project Parameters (for Inquiry Mode) */}
+              {formMode === 'inquiry' && (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                        <Globe className="w-3.5 h-3.5 text-blue-600" />
+                        <span>Preferred Consultation Timezone</span>
+                      </label>
+                      <select
+                        value={timezone}
+                        onChange={(e) => setTimezone(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 font-medium"
+                      >
+                        <option value="EST">North America East (EST / UTC-5)</option>
+                        <option value="PST">North America West (PST / UTC-8)</option>
+                        <option value="GMT">UK / Ireland (GMT/BST / UTC+0/+1)</option>
+                        <option value="CET">Central Europe (CET / UTC+1)</option>
+                        <option value="IST">India Standard Time (IST / UTC+5:30)</option>
+                        <option value="SGT">Singapore / East Asia (SGT / UTC+8)</option>
+                        <option value="AEST">Australia (AEST / UTC+10)</option>
+                      </select>
+                    </div>
 
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200 self-end">
-                  <input
-                    type="checkbox"
-                    id="nda-checkbox"
-                    checked={needsNda}
-                    onChange={(e) => setNeedsNda(e.target.checked)}
-                    className="w-4 h-4 rounded text-[#0b3b70] focus:ring-blue-500"
-                  />
-                  <label htmlFor="nda-checkbox" className="text-xs text-slate-700 select-none cursor-pointer">
-                    <span className="font-semibold text-slate-900">Execute mutual NDA</span> prior to project data transfer
-                  </label>
-                </div>
-              </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-semibold text-slate-700">
+                        Procurement / Funding Vehicle
+                      </label>
+                      <select
+                        value={fundingType}
+                        onChange={(e) => setFundingType(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
+                      >
+                        <option value="grant">University / Institute Grant (NIH, Horizon, DBT, DST)</option>
+                        <option value="po">Institutional Purchase Order (PO / Wire in USD, EUR, GBP)</option>
+                        <option value="corporate">Biotech Startup / Corporate R&amp;D Invoicing</option>
+                        <option value="fellowship">Individual Fellowship / Thesis Self-Funded</option>
+                        <option value="los">Request Grant Co-PI / Letter of Support (LOS)</option>
+                      </select>
+                    </div>
+                  </div>
 
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-semibold text-slate-700">
+                        Desired Delivery Timeline
+                      </label>
+                      <select
+                        value={urgency}
+                        onChange={(e) => setUrgency(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
+                      >
+                        <option value="urgent">Urgent (&lt; 2 Weeks)</option>
+                        <option value="standard">Standard (2 - 4 Weeks)</option>
+                        <option value="flexible">Flexible / Ongoing Semester Cohort</option>
+                      </select>
+                    </div>
+
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200 self-end">
+                      <input
+                        type="checkbox"
+                        id="nda-checkbox"
+                        checked={needsNda}
+                        onChange={(e) => setNeedsNda(e.target.checked)}
+                        className="w-4 h-4 rounded text-[#0b3b70] focus:ring-blue-500"
+                      />
+                      <label htmlFor="nda-checkbox" className="text-xs text-slate-700 select-none cursor-pointer">
+                        <span className="font-semibold text-slate-900">Execute mutual NDA</span> prior to project data transfer
+                      </label>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Message / Comments field */}
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-slate-700">
-                  Project Outline / Objectives / Software Requirements *
+                  {formMode === 'inquiry'
+                    ? 'Project Outline / Objectives / Software Requirements *'
+                    : 'Detailed Feedback / Scientific Notes / Observations *'}
                 </label>
                 <textarea
                   rows={4}
                   required
-                  placeholder="Describe biological targets, compound counts, sequencing depth, thesis deadlines, or specific simulation requirements..."
+                  placeholder={
+                    formMode === 'inquiry'
+                      ? 'Describe biological targets, compound counts, sequencing depth, thesis deadlines, or specific simulation requirements...'
+                      : 'Provide your feedback on bioinformatics accuracy, platform visualization speed, or suggestions for upcoming features...'
+                  }
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 resize-none"
                 />
               </div>
 
+              {/* Optional File Attachment (Converted to Base64 via FileReader for Google Drive) */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-slate-700 flex items-center justify-between">
+                  <span>Optional File Attachment (Saved to Google Drive)</span>
+                  <span className="text-[10px] text-slate-400">PDF, DOCX, PDB, FASTA, CSV, PNG (max 10MB)</span>
+                </label>
+
+                {!fileAttachment ? (
+                  <div className="relative border border-dashed border-slate-300 hover:border-blue-400 rounded-2xl p-4 bg-slate-50/70 hover:bg-blue-50/30 transition text-center group cursor-pointer">
+                    <input
+                      type="file"
+                      id="file-upload-input"
+                      onChange={handleFileUpload}
+                      disabled={isProcessingFile}
+                      accept=".pdf,.doc,.docx,.pdb,.sdf,.fasta,.fa,.csv,.tsv,.txt,.png,.jpg,.jpeg"
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <div className="flex flex-col items-center justify-center space-y-1.5 pointer-events-none">
+                      {isProcessingFile ? (
+                        <>
+                          <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
+                          <div className="text-xs font-medium text-slate-600">Encoding file to Base64...</div>
+                        </>
+                      ) : (
+                        <>
+                          <UploadCloud className="w-6 h-6 text-slate-400 group-hover:text-blue-600 transition-colors" />
+                          <div className="text-xs font-medium text-slate-700">
+                            Click or drag file to attach for Google Drive
+                          </div>
+                          <div className="text-[10px] text-slate-500">
+                            PDB coordinates, project scoping doc, thesis draft, or screenshot
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-xs animate-fadeIn">
+                    <div className="flex items-center gap-2.5 truncate">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                        <FileText className="w-4 h-4" />
+                      </div>
+                      <div className="truncate">
+                        <div className="font-bold text-slate-900 truncate">{fileAttachment.fileName}</div>
+                        <div className="text-[10px] text-emerald-700 font-mono">
+                          {fileAttachment.sizeFormatted} • Encoded for Google Drive
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleRemoveFile}
+                      className="p-1 rounded-md text-slate-400 hover:text-rose-600 transition shrink-0"
+                      title="Remove Attachment"
+                    >
+                      <XCircle className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+
+                {fileError && (
+                  <div className="text-[11px] text-rose-600 font-medium px-1">
+                    {fileError}
+                  </div>
+                )}
+              </div>
+
+              {/* Submit Button & Visual State */}
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#0b3b70] hover:bg-[#082e59] text-white font-bold text-xs sm:text-sm transition shadow-sm flex items-center justify-center gap-2"
+                  disabled={isSubmitting || isProcessingFile}
+                  className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#0b3b70] hover:bg-[#082e59] text-white font-bold text-xs sm:text-sm transition shadow-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed active:scale-95"
                 >
-                  <Send className="w-4 h-4" />
-                  <span>Transmit Scoping Inquiry</span>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-sky-300" />
+                      <span>Submitting to Google Account...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>
+                        {formMode === 'feedback' ? 'Submit Feedback & Record' : 'Transmit Scoping Inquiry'}
+                      </span>
+                    </>
+                  )}
                 </button>
               </div>
             </form>

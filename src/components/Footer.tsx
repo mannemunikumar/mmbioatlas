@@ -104,6 +104,14 @@ export const Footer: React.FC<FooterProps> = ({ onSelectView, onOpenBrandKit, on
                   Contact Us
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => onSelectView('contact')}
+                  className="hover:text-sky-300 transition text-left text-cyan-300"
+                >
+                  User Feedback &amp; Reviews
+                </button>
+              </li>
             </ul>
           </div>
 
