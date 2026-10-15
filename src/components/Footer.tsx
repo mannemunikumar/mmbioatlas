@@ -5,7 +5,9 @@ import {
   ShieldCheck, 
   PhoneCall, 
   Mail,
-  Linkedin
+  Linkedin,
+  GraduationCap,
+  Github
 } from 'lucide-react';
 import { LEADERSHIP_CONTACT } from '../data/organizationData';
 
@@ -50,6 +52,39 @@ export const Footer: React.FC<FooterProps> = ({ onSelectView, onOpenBrandKit, on
               >
                 <Linkedin className="w-3.5 h-3.5" />
                 <span>LinkedIn</span>
+              </a>
+              <span className="text-slate-500">•</span>
+              <a
+                href="https://scholar.google.com/citations?user=_Fejj7YAAAAJ&hl=en"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-sky-400 hover:text-white flex items-center gap-1 transition font-medium"
+                title="Google Scholar – Dr. Manne Munikumar Citations"
+              >
+                <GraduationCap className="w-3.5 h-3.5" />
+                <span>Scholar</span>
+              </a>
+              <span className="text-slate-500">•</span>
+              <a
+                href="https://www.researchgate.net/profile/Manne-Munikumar?ev=hdr_xprf&_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6ImhvbWUiLCJwYWdlIjoiaG9tZSIsInBvc2l0aW9uIjoiZ2xvYmFsSGVhZGVyIn19"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-emerald-400 hover:text-white flex items-center gap-1 transition font-medium font-mono"
+                title="ResearchGate – Dr. Manne Munikumar Scientific Profile"
+              >
+                <span className="w-3.5 h-3.5 rounded bg-emerald-600 text-white text-[9px] flex items-center justify-center font-bold">RG</span>
+                <span>ResearchGate</span>
+              </a>
+              <span className="text-slate-500">•</span>
+              <a
+                href="https://github.com/mannemunikumar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-slate-300 hover:text-white flex items-center gap-1 transition font-medium"
+                title="GitHub – Dr. Manne Munikumar Repositories"
+              >
+                <Github className="w-3.5 h-3.5" />
+                <span>GitHub</span>
               </a>
             </div>
           </div>
@@ -224,20 +259,54 @@ export const Footer: React.FC<FooterProps> = ({ onSelectView, onOpenBrandKit, on
           <div>
             &copy; {new Date().getFullYear()} M &amp; M BioATLAS. All rights reserved.
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             <a
               href="https://www.linkedin.com/company/mmbioatlas/?viewAsMember=true"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-slate-300 hover:text-white transition"
+              title="M & M BioATLAS on LinkedIn"
             >
               <Linkedin className="w-3.5 h-3.5 text-[#0077b5]" />
               <span>LinkedIn</span>
             </a>
             <span className="text-slate-600">•</span>
+            <a
+              href="https://scholar.google.com/citations?user=_Fejj7YAAAAJ&hl=en"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-slate-300 hover:text-white transition"
+              title="Google Scholar – Dr. Manne Munikumar"
+            >
+              <GraduationCap className="w-3.5 h-3.5 text-sky-400" />
+              <span>Google Scholar</span>
+            </a>
+            <span className="text-slate-600">•</span>
+            <a
+              href="https://www.researchgate.net/profile/Manne-Munikumar?ev=hdr_xprf&_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6ImhvbWUiLCJwYWdlIjoiaG9tZSIsInBvc2l0aW9uIjoiZ2xvYmFsSGVhZGVyIn19"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-slate-300 hover:text-white transition"
+              title="ResearchGate – Dr. Manne Munikumar"
+            >
+              <span className="w-3.5 h-3.5 rounded bg-emerald-600 text-white text-[9px] flex items-center justify-center font-bold font-mono">RG</span>
+              <span>ResearchGate</span>
+            </a>
+            <span className="text-slate-600">•</span>
+            <a
+              href="https://github.com/mannemunikumar"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-slate-300 hover:text-white transition"
+              title="GitHub – Dr. Manne Munikumar"
+            >
+              <Github className="w-3.5 h-3.5 text-slate-300" />
+              <span>GitHub</span>
+            </a>
+            <span className="text-slate-600">•</span>
             <span className="flex items-center gap-1.5 text-slate-300">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Strict Academic Confidentiality &amp; NDA Standard</span>
+              <span>Academic Confidentiality &amp; NDA</span>
             </span>
           </div>
         </div>

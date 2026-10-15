@@ -62,9 +62,8 @@ import {
   Sparkles,
   Globe,
   Linkedin,
-  Twitter,
+  GraduationCap,
   Github,
-  Youtube,
   ExternalLink,
   PhoneCall,
   UserCheck,
@@ -1036,50 +1035,54 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/10 hover:bg-[#0077b5] border border-white/10 transition group"
+                title="LinkedIn – M & M BioATLAS"
               >
                 <Linkedin className="w-4 h-4 text-sky-300 group-hover:text-white shrink-0" />
                 <div className="text-left">
                   <div className="text-xs font-bold text-white">LinkedIn</div>
-                  <div className="text-[10px] text-slate-300">18K+ Network</div>
+                  <div className="text-[10px] text-slate-300">Official Desk</div>
                 </div>
               </a>
 
               <a
-                href="https://twitter.com"
+                href="https://scholar.google.com/citations?user=_Fejj7YAAAAJ&hl=en"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/10 hover:bg-sky-500 border border-white/10 transition group"
+                className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/10 hover:bg-sky-600 border border-white/10 transition group"
+                title="Google Scholar – Dr. Manne Munikumar Citations"
               >
-                <Twitter className="w-4 h-4 text-sky-400 group-hover:text-white shrink-0" />
+                <GraduationCap className="w-4 h-4 text-sky-400 group-hover:text-white shrink-0" />
                 <div className="text-left">
-                  <div className="text-xs font-bold text-white">X / Twitter</div>
-                  <div className="text-[10px] text-slate-300">@BioATLAS</div>
+                  <div className="text-xs font-bold text-white">Google Scholar</div>
+                  <div className="text-[10px] text-slate-300">Citations &amp; Papers</div>
                 </div>
               </a>
 
               <a
-                href="https://github.com"
+                href="https://www.researchgate.net/profile/Manne-Munikumar?ev=hdr_xprf&_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6ImhvbWUiLCJwYWdlIjoiaG9tZSIsInBvc2l0aW9uIjoiZ2xvYmFsSGVhZGVyIn19"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/10 hover:bg-emerald-600 border border-white/10 transition group"
+                title="ResearchGate – Dr. Manne Munikumar Profile"
+              >
+                <span className="w-4 h-4 rounded bg-emerald-500 text-white text-[9px] flex items-center justify-center font-mono font-bold shrink-0 group-hover:bg-white group-hover:text-emerald-700 transition">RG</span>
+                <div className="text-left">
+                  <div className="text-xs font-bold text-white">ResearchGate</div>
+                  <div className="text-[10px] text-slate-300">Scientific Profile</div>
+                </div>
+              </a>
+
+              <a
+                href="https://github.com/mannemunikumar"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/10 hover:bg-slate-800 border border-white/10 transition group"
+                title="GitHub – Dr. Manne Munikumar Pipelines & Repositories"
               >
                 <Github className="w-4 h-4 text-slate-300 group-hover:text-white shrink-0" />
                 <div className="text-left">
                   <div className="text-xs font-bold text-white">GitHub</div>
-                  <div className="text-[10px] text-slate-300">Workflows</div>
-                </div>
-              </a>
-
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/10 hover:bg-red-600 border border-white/10 transition group"
-              >
-                <Youtube className="w-4 h-4 text-red-400 group-hover:text-white shrink-0" />
-                <div className="text-left">
-                  <div className="text-xs font-bold text-white">YouTube</div>
-                  <div className="text-[10px] text-slate-300">Protocols</div>
+                  <div className="text-[10px] text-slate-300">Repositories</div>
                 </div>
               </a>
             </div>

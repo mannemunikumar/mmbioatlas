@@ -7,9 +7,7 @@ import {
   ArrowRight, 
   ExternalLink, 
   Linkedin, 
-  Twitter, 
   Github, 
-  Youtube, 
   FileText, 
   Award, 
   Sparkles, 
@@ -367,26 +365,50 @@ export const InternationalResearchHub: React.FC<InternationalResearchHubProps> =
             </a>
           </div>
 
-          {/* X / Twitter */}
+          {/* Google Scholar */}
           <div className="p-5 rounded-2xl bg-slate-50 hover:bg-sky-50/50 border border-slate-200 hover:border-sky-300 transition group flex flex-col justify-between space-y-4">
             <div className="space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Twitter className="w-5 h-5" />
+              <div className="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <GraduationCap className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-900">X / BioTwitter Desk</h4>
+                <h4 className="text-sm font-bold text-slate-900">Google Scholar Citations</h4>
                 <p className="text-xs text-slate-500 mt-1">
-                  Live conference updates, bioRxiv preprints, GROMACS benchmark releases, and bioinformatics discussions.
+                  Peer-reviewed publications, h-index citations, structural biology monographs, and high-impact international co-authorships.
                 </p>
               </div>
             </div>
             <a
-              href="https://twitter.com"
+              href="https://scholar.google.com/citations?user=_Fejj7YAAAAJ&hl=en"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-sky-600 hover:underline"
             >
-              <span>Follow @BioATLAS_Science</span>
+              <span>View Scholar Citations</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+
+          {/* ResearchGate */}
+          <div className="p-5 rounded-2xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200 hover:border-emerald-300 transition group flex flex-col justify-between space-y-4">
+            <div className="space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <span className="w-6 h-6 rounded-lg bg-emerald-600 text-white text-xs font-mono font-bold flex items-center justify-center">RG</span>
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-slate-900">ResearchGate Scientific Desk</h4>
+                <p className="text-xs text-slate-500 mt-1">
+                  Preprints, experimental protocols, molecular dynamics benchmark datasets, and global investigator Q&amp;A.
+                </p>
+              </div>
+            </div>
+            <a
+              href="https://www.researchgate.net/profile/Manne-Munikumar?ev=hdr_xprf&_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6ImhvbWUiLCJwYWdlIjoiaG9tZSIsInBvc2l0aW9uIjoiZ2xvYmFsSGVhZGVyIn19"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 hover:underline"
+            >
+              <span>View ResearchGate Profile</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>
@@ -405,36 +427,12 @@ export const InternationalResearchHub: React.FC<InternationalResearchHubProps> =
               </div>
             </div>
             <a
-              href="https://github.com"
+              href="https://github.com/mannemunikumar"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-900 hover:underline"
             >
-              <span>Explore Repositories</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
-
-          {/* YouTube */}
-          <div className="p-5 rounded-2xl bg-slate-50 hover:bg-rose-50/50 border border-slate-200 hover:border-rose-300 transition group flex flex-col justify-between space-y-4">
-            <div className="space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Youtube className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-900">YouTube Science Channel</h4>
-                <p className="text-xs text-slate-500 mt-1">
-                  Video protocols for molecular docking with AutoDock, solvated MD simulations, and RNA-Seq volcano plot tutorials.
-                </p>
-              </div>
-            </div>
-            <a
-              href="https://youtube.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-600 hover:underline"
-            >
-              <span>Subscribe &amp; Watch</span>
+              <span>Explore @mannemunikumar Repositories</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>

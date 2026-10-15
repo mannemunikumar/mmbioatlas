@@ -20,9 +20,7 @@ import {
   PhoneCall,
   LayoutGrid,
   Linkedin,
-  Twitter,
   Github,
-  Youtube,
   Globe,
   Phone,
   Mail
@@ -92,46 +90,46 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Right: Academic Social Media Links */}
           <div className="flex items-center gap-3">
             <span className="text-slate-400 font-medium text-[10px] uppercase tracking-wider">Connect:</span>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
               <a
                 href="https://www.linkedin.com/company/mmbioatlas/?viewAsMember=true"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-1 rounded hover:bg-white/15 text-slate-300 hover:text-sky-300 transition"
-                title="LinkedIn – Institutional & Research Updates"
+                title="LinkedIn – Official Institutional & Research Updates"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-3.5 h-3.5" />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://scholar.google.com/citations?user=_Fejj7YAAAAJ&hl=en"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-1 rounded hover:bg-white/15 text-slate-300 hover:text-sky-300 transition"
-                title="X / Twitter – Preprints & Bioinformatic Benchmarks"
-                aria-label="X / Twitter"
+                title="Google Scholar – Dr. Manne Munikumar Citations & Publications"
+                aria-label="Google Scholar"
               >
-                <Twitter className="w-3.5 h-3.5" />
+                <GraduationCap className="w-3.5 h-3.5 text-sky-400" />
               </a>
               <a
-                href="https://github.com"
+                href="https://www.researchgate.net/profile/Manne-Munikumar?ev=hdr_xprf&_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6ImhvbWUiLCJwYWdlIjoiaG9tZSIsInBvc2l0aW9uIjoiZ2xvYmFsSGVhZGVyIn19"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-1.5 py-0.5 rounded hover:bg-white/15 text-emerald-400 hover:text-emerald-300 transition font-bold text-[10px] font-mono tracking-tight"
+                title="ResearchGate – Dr. Manne Munikumar Scientific Profile & Preprints"
+                aria-label="ResearchGate"
+              >
+                RG
+              </a>
+              <a
+                href="https://github.com/mannemunikumar"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-1 rounded hover:bg-white/15 text-slate-300 hover:text-sky-300 transition"
-                title="GitHub – Open-Source Nextflow Pipelines & Code"
+                title="GitHub – Dr. Manne Munikumar Open-Source Pipelines & Code"
                 aria-label="GitHub"
               >
                 <Github className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-1 rounded hover:bg-white/15 text-slate-300 hover:text-rose-400 transition"
-                title="YouTube – Scientific Webinars & MD Tutorials"
-                aria-label="YouTube"
-              >
-                <Youtube className="w-3.5 h-3.5" />
               </a>
             </div>
           </div>
@@ -336,45 +334,45 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>Scientific Socials:</span>
               <span className="text-[10px] text-emerald-600 font-sans font-medium">Global Desks</span>
             </div>
-            <div className="flex items-center justify-around px-4 py-2 bg-slate-50 rounded-xl mx-2 border border-slate-200/80">
+            <div className="flex items-center justify-around px-3 py-2 bg-slate-50 rounded-xl mx-2 border border-slate-200/80 text-xs font-medium">
               <a
                 href="https://www.linkedin.com/company/mmbioatlas/?viewAsMember=true"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-xs text-slate-700 hover:text-blue-700 font-medium"
+                className="flex items-center gap-1 text-slate-700 hover:text-blue-700"
               >
                 <Linkedin className="w-4 h-4 text-[#0077b5]" />
                 <span>LinkedIn</span>
               </a>
               <span className="text-slate-300">•</span>
               <a
-                href="https://twitter.com"
+                href="https://scholar.google.com/citations?user=_Fejj7YAAAAJ&hl=en"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-xs text-slate-700 hover:text-sky-600 font-medium"
+                className="flex items-center gap-1 text-slate-700 hover:text-sky-700"
               >
-                <Twitter className="w-4 h-4 text-sky-500" />
-                <span>X</span>
+                <GraduationCap className="w-4 h-4 text-sky-600" />
+                <span>Scholar</span>
               </a>
               <span className="text-slate-300">•</span>
               <a
-                href="https://github.com"
+                href="https://www.researchgate.net/profile/Manne-Munikumar?ev=hdr_xprf&_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6ImhvbWUiLCJwYWdlIjoiaG9tZSIsInBvc2l0aW9uIjoiZ2xvYmFsSGVhZGVyIn19"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-xs text-slate-700 hover:text-slate-950 font-medium"
+                className="flex items-center gap-1 text-slate-700 hover:text-emerald-700 font-bold"
+              >
+                <span className="w-4 h-4 rounded bg-emerald-600 text-white text-[9px] flex items-center justify-center font-mono">RG</span>
+                <span>ResearchGate</span>
+              </a>
+              <span className="text-slate-300">•</span>
+              <a
+                href="https://github.com/mannemunikumar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-slate-700 hover:text-slate-950"
               >
                 <Github className="w-4 h-4" />
                 <span>GitHub</span>
-              </a>
-              <span className="text-slate-300">•</span>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 text-xs text-slate-700 hover:text-red-600 font-medium"
-              >
-                <Youtube className="w-4 h-4 text-red-600" />
-                <span>YouTube</span>
               </a>
             </div>
           </div>
