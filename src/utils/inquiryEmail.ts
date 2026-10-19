@@ -2,12 +2,12 @@
  * Inquiry Email & Communication Dispatch Utility
  * Ensures inquiries are delivered directly to the leadership team:
  * - mmbioatlas@gmail.com
- * - mannemunidivya@gmail.com
+ * - mannemunikumar.bioinfo@gmail.com
  */
 
 export const INQUIRY_RECIPIENT_EMAILS = [
   'mmbioatlas@gmail.com',
-  'mannemunidivya@gmail.com'
+  'mannemunikumar.bioinfo@gmail.com'
 ];
 
 export const INQUIRY_WHATSAPP_PHONE = '919492373997';

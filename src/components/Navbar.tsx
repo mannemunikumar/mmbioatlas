@@ -387,7 +387,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
 
             <a
-              href={`mailto:${LEADERSHIP_CONTACT.email}`}
+              href={`mailto:${LEADERSHIP_CONTACT.mailtoRecipients}`}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#0b3b70] text-xs font-bold font-mono border border-blue-200 transition"
             >
               <Mail className="w-4 h-4 text-blue-700" />

@@ -376,13 +376,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             </a>
 
             <a
-              href={`mailto:${LEADERSHIP_CONTACT.email}?subject=Research%20Inquiry%20to%20Dr.%20Manne%20Munikumar`}
+              href={`mailto:${LEADERSHIP_CONTACT.mailtoRecipients}?subject=Research%20Inquiry%20to%20Dr.%20Manne%20Munikumar`}
               className="flex items-center gap-2 px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm border border-white/20 transition backdrop-blur-xs"
-              title={`Direct Email: ${LEADERSHIP_CONTACT.email}`}
+              title={`Official Email: ${LEADERSHIP_CONTACT.email}`}
             >
               <Mail className="w-4 h-4 text-sky-400 shrink-0" />
               <span className="hidden sm:inline font-mono">{LEADERSHIP_CONTACT.email}</span>
-              <span className="sm:hidden">Email</span>
+              <span className="sm:hidden">Email Director</span>
             </a>
           </div>
         </div>
@@ -405,34 +405,34 @@ export const ContactPage: React.FC<ContactPageProps> = ({
           <p className="text-[11px] text-slate-500">Dr. Manne Munikumar MSc., PhD • Available {LEADERSHIP_CONTACT.operatingHours}</p>
         </div>
 
-        {/* Card 2: Director Direct Email */}
+        {/* Card 2: Official BioATLAS Email */}
         <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-2 hover:border-blue-300 transition">
           <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#0b3b70] flex items-center justify-center">
             <Mail className="w-5 h-5" />
           </div>
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Director Direct Email</div>
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Official BioATLAS Email</div>
           <a
-            href={`mailto:${LEADERSHIP_CONTACT.email}?subject=BioATLAS%20Research%20Collaboration`}
+            href={`mailto:${LEADERSHIP_CONTACT.mailtoRecipients}?subject=BioATLAS%20Research%20Collaboration`}
             className="text-sm font-bold text-[#0b3b70] hover:text-blue-700 transition break-all block font-mono"
           >
             {LEADERSHIP_CONTACT.email}
           </a>
-          <p className="text-[11px] text-slate-500">Dr. Manne Munikumar • Direct scientific inquiries &amp; CRO</p>
+          <p className="text-[11px] text-slate-500">Official institutional desk &amp; CRO inquiries</p>
         </div>
 
-        {/* Card 3: Training & Academic MoUs */}
+        {/* Card 3: Academic & Training Desk */}
         <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-2 hover:border-teal-300 transition">
           <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center">
             <Building2 className="w-5 h-5" />
           </div>
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Training &amp; Academic MoUs</div>
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Academic &amp; Training Desk</div>
           <a
-            href={`mailto:${LEADERSHIP_CONTACT.academicEmail}`}
-            className="text-sm font-bold text-slate-900 hover:text-teal-700 transition break-all block"
+            href={`mailto:${LEADERSHIP_CONTACT.mailtoRecipients}?subject=Scientific%20Collaboration%20%26%20Training%20Inquiry`}
+            className="text-sm font-bold text-slate-900 hover:text-teal-700 transition break-all block font-mono"
           >
-            {LEADERSHIP_CONTACT.academicEmail}
+            {LEADERSHIP_CONTACT.email}
           </a>
-          <p className="text-[11px] text-slate-500">For internships, university alliances &amp; workshops</p>
+          <p className="text-[11px] text-slate-500">University partnerships, internships &amp; MoUs</p>
         </div>
 
         {/* Card 4: Response Window & NDA */}
@@ -575,13 +575,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 <div className="text-[11px] font-mono text-cyan-400 uppercase tracking-wider font-semibold">
                   Addressed To Leadership Team:
                 </div>
-                <ul className="text-xs font-mono text-slate-300 space-y-1.5">
-                  {INQUIRY_RECIPIENT_EMAILS.map((recipient) => (
-                    <li key={recipient} className="flex items-center gap-2 text-slate-200">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
-                      <span>{recipient}</span>
-                    </li>
-                  ))}
+                <ul className="text-xs font-mono text-slate-300 space-y-1.5" data-recipients={INQUIRY_RECIPIENT_EMAILS.join(',')}>
+                  <li className="flex items-center gap-2 text-slate-200">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+                    <span>{LEADERSHIP_CONTACT.email}</span>
+                  </li>
                 </ul>
               </div>
 
@@ -989,9 +987,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 </a>
               </div>
               <div className="flex items-center justify-between pb-1 border-b border-slate-200">
-                <span className="font-semibold text-slate-900">Direct Email:</span>
+                <span className="font-semibold text-slate-900">Official Email:</span>
                 <a 
-                  href={`mailto:${LEADERSHIP_CONTACT.email}`} 
+                  href={`mailto:${LEADERSHIP_CONTACT.mailtoRecipients}`} 
                   className="text-blue-700 font-bold hover:underline font-mono text-[11px]"
                 >
                   {LEADERSHIP_CONTACT.email}

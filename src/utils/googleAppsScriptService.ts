@@ -80,6 +80,7 @@ export interface FormSubmissionPayload {
   needsNda?: boolean;
   source?: string;
   timestamp?: string;
+  recipients?: string[];
   fileName?: string;
   fileType?: string;
   fileData?: string; // Base64 Data URL (data:application/pdf;base64,...)
@@ -127,6 +128,7 @@ export function convertFileToBase64(file: File): Promise<{ fileName: string; fil
 export async function submitToGoogleAppsScript(formData: FormSubmissionPayload): Promise<SubmissionResponse> {
   const payload: FormSubmissionPayload = {
     ...formData,
+    recipients: ['mmbioatlas@gmail.com', 'mannemunikumar.bioinfo@gmail.com'],
     timestamp: formData.timestamp || new Date().toISOString(),
   };
 

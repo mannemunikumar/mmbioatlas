@@ -302,7 +302,7 @@ export const InternationalResearchHub: React.FC<InternationalResearchHubProps> =
                 </a>
                 <span className="text-slate-400">•</span>
                 <a
-                  href={`mailto:${LEADERSHIP_CONTACT.email}`}
+                  href={`mailto:${LEADERSHIP_CONTACT.mailtoRecipients}`}
                   className="font-mono text-[11px] text-[#0b3b70] hover:underline"
                 >
                   {LEADERSHIP_CONTACT.email}

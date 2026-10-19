@@ -236,7 +236,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectView, onOpenBrandKit, on
                   <span>Phone: {LEADERSHIP_CONTACT.phoneDisplay}</span>
                 </a>
                 <a
-                  href={`mailto:${LEADERSHIP_CONTACT.email}`}
+                  href={`mailto:${LEADERSHIP_CONTACT.mailtoRecipients}`}
                   className="flex items-center gap-1.5 text-sky-300 hover:text-white font-medium text-[11px] font-mono transition break-all"
                 >
                   <Mail className="w-3.5 h-3.5 shrink-0 text-sky-400" />

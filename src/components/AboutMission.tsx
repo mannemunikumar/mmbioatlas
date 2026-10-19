@@ -427,7 +427,7 @@ export const AboutMission: React.FC<AboutMissionProps> = ({
             </a>
 
             <a
-              href={`mailto:${LEADERSHIP_CONTACT.email}?subject=Scientific%20Inquiry%20to%20Dr.%20Manne%20Munikumar`}
+              href={`mailto:${LEADERSHIP_CONTACT.mailtoRecipients}?subject=Scientific%20Inquiry%20to%20Dr.%20Manne%20Munikumar`}
               className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#0b3b70] font-semibold text-xs transition border border-blue-200 font-mono"
             >
               <Mail className="w-4 h-4 text-blue-700" />

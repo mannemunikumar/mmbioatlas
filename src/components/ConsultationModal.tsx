@@ -305,13 +305,11 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
               <div className="text-[11px] font-mono text-cyan-400 uppercase tracking-wider font-semibold">
                 Delivered / Addressed to:
               </div>
-              <ul className="text-xs font-mono text-slate-300 space-y-1">
-                {INQUIRY_RECIPIENT_EMAILS.map((recipient) => (
-                  <li key={recipient} className="flex items-center gap-2 text-slate-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span>{recipient}</span>
-                  </li>
-                ))}
+              <ul className="text-xs font-mono text-slate-300 space-y-1" data-recipients={INQUIRY_RECIPIENT_EMAILS.join(',')}>
+                <li className="flex items-center gap-2 text-slate-200">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span>{LEADERSHIP_CONTACT.email}</span>
+                </li>
               </ul>
             </div>
 
@@ -556,7 +554,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                 </a>
                 <span className="text-slate-600 hidden sm:inline">•</span>
                 <a
-                  href={`mailto:${LEADERSHIP_CONTACT.email}`}
+                  href={`mailto:${LEADERSHIP_CONTACT.mailtoRecipients}`}
                   className="flex items-center gap-1.5 text-sky-400 hover:text-sky-300 transition text-[11px]"
                 >
                   <Mail className="w-3.5 h-3.5 shrink-0" />

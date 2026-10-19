@@ -269,7 +269,9 @@ export const LEADERSHIP_CONTACT = {
   githubUrl: 'https://github.com/mannemunikumar',
   email: 'mmbioatlas@gmail.com',
   directEmail: 'mmbioatlas@gmail.com',
-  academicEmail: 'academy@mmbioatlas.org',
+  academicEmail: 'mmbioatlas@gmail.com',
+  mailtoRecipients: 'mmbioatlas@gmail.com,mannemunikumar.bioinfo@gmail.com',
+  emails: ['mmbioatlas@gmail.com', 'mannemunikumar.bioinfo@gmail.com'],
   operatingHours: 'Mon - Sat (09:00 - 18:00 IST)',
   expertise: [
     'Molecular Docking & High-Throughput Virtual Screening',
