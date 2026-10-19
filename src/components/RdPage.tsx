@@ -29,41 +29,62 @@ export const RdPage: React.FC<RdPageProps> = ({
     <div className="space-y-10 animate-fadeIn">
       {/* Hero Banner */}
       <section className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-slate-950 via-[#071d33] to-slate-900 border border-slate-800 text-white shadow-lg relative overflow-hidden">
-        <div className="max-w-3xl space-y-4 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-medium">
-            <Boxes className="w-3.5 h-3.5 text-cyan-400" />
-            <span>High-Throughput Bio-Computing Innovation</span>
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          <div className="lg:col-span-7 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-medium">
+              <Boxes className="w-3.5 h-3.5 text-cyan-400" />
+              <span>High-Throughput Bio-Computing Innovation</span>
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight font-sans">
+              Research &amp; Development{' '}
+              <span className="bg-gradient-to-r from-cyan-300 via-sky-200 to-teal-300 bg-clip-text text-transparent">
+                (R&amp;D Division)
+              </span>
+            </h1>
+
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
+              The R&amp;D division at M &amp; M BioATLAS engineers automated bioinformatic pipelines, machine-learning conformational filters, and scalable cloud execution clusters. By automating routine computational tasks, the team accelerates hit discovery and multi-omic data synthesis from months into days.
+            </p>
+
+            <div className="pt-2 flex flex-wrap items-center gap-3 text-xs">
+              <button
+                onClick={() => onOpenConsultation('cro')}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-xs sm:text-sm transition shadow-sm"
+              >
+                <Send className="w-4 h-4" />
+                <span>Pilot An R&amp;D Pipeline</span>
+              </button>
+              <button
+                onClick={() => {
+                  const el = document.getElementById('pipelines-grid');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs sm:text-sm border border-white/20 transition"
+              >
+                <span>Explore Proprietary Algorithms</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight font-sans">
-            Research &amp; Development{' '}
-            <span className="bg-gradient-to-r from-cyan-300 via-sky-200 to-teal-300 bg-clip-text text-transparent">
-              (R&amp;D Division)
-            </span>
-          </h1>
-
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-            The R&amp;D division at M &amp; M BioATLAS engineers automated bioinformatic pipelines, machine-learning conformational filters, and scalable cloud execution clusters. By automating routine computational tasks, the team accelerates hit discovery and multi-omic data synthesis from months into days.
-          </p>
-
-          <div className="pt-2 flex flex-wrap items-center gap-3 text-xs">
-            <button
-              onClick={() => onOpenConsultation('cro')}
-              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-xs sm:text-sm transition shadow-sm"
-            >
-              <Send className="w-4 h-4" />
-              <span>Pilot An R&amp;D Pipeline</span>
-            </button>
-            <button
-              onClick={() => {
-                const el = document.getElementById('pipelines-grid');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs sm:text-sm border border-white/20 transition"
-            >
-              <span>Explore Proprietary Algorithms</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+          {/* Right Column: Research & Development Visual Illustration */}
+          <div className="lg:col-span-5 flex items-center justify-center">
+            <div className="relative w-full rounded-2xl overflow-hidden border border-cyan-400/30 bg-slate-950/80 shadow-2xl shadow-cyan-950/50 group">
+              <img
+                src="/rd-bioinformatics-hero.svg"
+                alt="Research and Development High-Throughput Bioinformatics and Molecular Dynamics Visualization"
+                referrerPolicy="no-referrer"
+                className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+              />
+              <div className="px-4 py-2.5 bg-slate-950/90 border-t border-slate-800/90 flex items-center justify-between text-[11px] font-mono text-slate-300">
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>R&amp;D Molecular &amp; AI Compute Engine</span>
+                </span>
+                <span className="text-cyan-400 font-semibold">GPU-Accelerated</span>
+              </div>
+            </div>
           </div>
         </div>
 

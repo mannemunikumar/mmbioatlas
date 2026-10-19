@@ -130,8 +130,8 @@ export const Overview: React.FC<OverviewProps> = ({
             <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
               <BookOpen className="w-4.5 h-4.5" />
             </div>
-            <div className="text-sm sm:text-base font-bold text-slate-900 leading-tight">Research</div>
-            <div className="text-xs text-slate-500 mt-1">Themes &amp; Papers</div>
+            <div className="text-sm sm:text-base font-bold text-slate-900 leading-tight">Publications</div>
+            <div className="text-xs text-slate-500 mt-1">Q1 Papers &amp; Grants</div>
           </button>
 
           <button

@@ -51,8 +51,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   const mainNavItems: { id: AtlasView; label: string; icon: React.ReactNode }[] = [
     { id: 'overview', label: 'Home', icon: <Compass className="w-3.5 h-3.5" /> },
     { id: 'services', label: 'Services', icon: <LayoutGrid className="w-3.5 h-3.5" /> },
-    { id: 'research', label: 'Research', icon: <FlaskConical className="w-3.5 h-3.5" /> },
-    { id: 'rd', label: 'R&D', icon: <Boxes className="w-3.5 h-3.5" /> },
+    { id: 'research', label: 'Publications', icon: <BookOpen className="w-3.5 h-3.5" /> },
+    { id: 'rd', label: 'R&D', icon: <FlaskConical className="w-3.5 h-3.5" /> },
     { id: 'projects', label: 'Projects', icon: <Briefcase className="w-3.5 h-3.5" /> },
     { id: 'training', label: 'Training', icon: <GraduationCap className="w-3.5 h-3.5" /> },
     { id: 'contact', label: 'Contact', icon: <PhoneCall className="w-3.5 h-3.5" /> },
@@ -148,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1.5 bg-slate-100/90 p-1.5 rounded-xl border border-slate-200/80 shadow-xs">
+          <nav className="hidden lg:flex items-center justify-end gap-2 bg-slate-100/90 p-1.5 rounded-xl border border-slate-200/80 shadow-xs ml-auto">
             {mainNavItems.map((item) => {
               if (item.id === 'services') {
                 return (
@@ -157,7 +157,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       id={`nav-${item.id}`}
                       onClick={() => onSelectView('services')}
                       onMouseEnter={() => setServicesDropdownOpen(true)}
-                      className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
                         isServicesActive
                           ? 'bg-[#0b3b70] text-white shadow-sm'
                           : 'text-slate-600 hover:text-[#0b3b70] hover:bg-white/80 border border-transparent'
@@ -204,7 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={item.id}
                   id={`nav-${item.id}`}
                   onClick={() => onSelectView(item.id)}
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
                     isActive
                       ? 'bg-[#0b3b70] text-white shadow-sm'
                       : 'text-slate-600 hover:text-[#0b3b70] hover:bg-white/80 border border-transparent'
@@ -217,65 +217,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </button>
               );
             })}
-
-            {/* Atlas & More Dropdown */}
-            <div className="relative" onMouseLeave={() => setDataDropdownOpen(false)}>
-              <button
-                onClick={() => setDataDropdownOpen(!dataDropdownOpen)}
-                onMouseEnter={() => setDataDropdownOpen(true)}
-                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
-                  isAtlasActive
-                    ? 'bg-[#0b3b70] text-white shadow-sm'
-                    : 'text-slate-600 hover:text-[#0b3b70] hover:bg-white/80 border border-transparent'
-                }`}
-              >
-                <span>Atlas Data</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${dataDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {dataDropdownOpen && (
-                <div 
-                  className="absolute top-full right-0 mt-1.5 w-60 rounded-xl bg-white border border-slate-200 shadow-xl p-2 space-y-1 z-50 animate-fadeIn text-slate-700"
-                >
-                  {atlasSubItems.map((sub) => (
-                    <button
-                      key={sub.id}
-                      onClick={() => {
-                        onSelectView(sub.id);
-                        setDataDropdownOpen(false);
-                      }}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-left transition ${
-                        currentView === sub.id
-                          ? 'bg-sky-50 text-[#0b3b70] font-semibold'
-                          : 'text-slate-600 hover:bg-slate-50'
-                      }`}
-                    >
-                      {sub.icon}
-                      <span>{sub.label}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
           </nav>
 
-          {/* Right Utilities & Actions */}
-          <div className="flex items-center gap-2">
-            {/* Quick Contact CTA */}
-            <button
-              id="nav-consultation-trigger"
-              onClick={() => onSelectView('contact')}
-              className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0b3b70] hover:bg-[#082e59] text-white text-xs font-semibold tracking-wide transition shadow-sm"
-            >
-              <Send className="w-3.5 h-3.5" />
-              <span>Contact Us</span>
-            </button>
-
-            {/* Mobile menu hamburger */}
+          {/* Mobile menu hamburger */}
+          <div className="flex lg:hidden items-center">
             <button
               id="mobile-nav-toggle"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg bg-slate-100 border border-slate-200 text-slate-700"
+              className="p-2 rounded-lg bg-slate-100 border border-slate-200 text-slate-700"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

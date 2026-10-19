@@ -116,7 +116,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectView, onOpenBrandKit, on
                   onClick={() => onSelectView('research')}
                   className="hover:text-sky-300 transition text-left"
                 >
-                  Scientific Research
+                  Publications &amp; Grants
                 </button>
               </li>
               <li>

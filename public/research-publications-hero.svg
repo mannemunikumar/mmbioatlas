@@ -1,0 +1,219 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="100%" height="100%">
+  <defs>
+    <linearGradient id="pubBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#041122" />
+      <stop offset="50%" stop-color="#071f38" />
+      <stop offset="100%" stop-color="#051629" />
+    </linearGradient>
+    <radialGradient id="skyGlow" cx="35%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.22" />
+      <stop offset="65%" stop-color="#0284c7" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="emeraldGlow" cx="75%" cy="65%" r="45%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.2" />
+      <stop offset="70%" stop-color="#059669" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f2947" stop-opacity="0.92" />
+      <stop offset="100%" stop-color="#081a30" stop-opacity="0.92" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#2dd4bf" />
+      <stop offset="100%" stop-color="#34d399" />
+    </linearGradient>
+    <pattern id="sciGrid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M 36 0 L 0 0 0 36" fill="none" stroke="#38bdf8" stroke-width="0.6" stroke-opacity="0.1" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="560" fill="url(#pubBg)" />
+  <rect width="800" height="560" fill="url(#sciGrid)" />
+  <circle cx="280" cy="220" r="260" fill="url(#skyGlow)" />
+  <circle cx="580" cy="360" r="240" fill="url(#emeraldGlow)" />
+
+  <!-- Top Header Status Bar -->
+  <g transform="translate(32, 24)">
+    <rect width="736" height="44" rx="10" fill="#081b33" fill-opacity="0.9" stroke="#1e3a5f" stroke-width="1.2" />
+    <circle cx="22" cy="22" r="5" fill="#34d399" />
+    <circle cx="40" cy="22" r="5" fill="#38bdf8" />
+    <circle cx="58" cy="22" r="5" fill="#a78bfa" />
+    <text x="80" y="26" fill="#e2e8f0" font-family="monospace" font-size="12" font-weight="bold">
+      M &amp; M BioATLAS // PEER-REVIEWED PUBLICATIONS &amp; TRANSLATIONAL ANALYTICS
+    </text>
+    <rect x="606" y="10" width="116" height="24" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1" />
+    <text x="664" y="26" fill="#6ee7b7" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">
+      Q1 / Q2 INDEXED
+    </text>
+  </g>
+
+  <!-- Left Panel: Featured Q1 Manuscript & Molecular Figure Plate -->
+  <g transform="translate(32, 86)">
+    <rect width="420" height="330" rx="16" fill="url(#cardGrad)" stroke="#1e40af" stroke-opacity="0.6" stroke-width="1.5" />
+    <rect x="20" y="20" width="128" height="24" rx="6" fill="#0c4a6e" stroke="#38bdf8" stroke-width="0.8" />
+    <text x="84" y="36" fill="#7dd3fc" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle">
+      JOURNAL OF MED CHEM
+    </text>
+    <rect x="330" y="20" width="70" height="24" rx="6" fill="#064e3b" stroke="#34d399" stroke-width="0.8" />
+    <text x="365" y="36" fill="#6ee7b7" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle">
+      IF: 14.7
+    </text>
+
+    <!-- Manuscript Title Lines -->
+    <text x="20" y="68" fill="#f8fafc" font-family="sans-serif" font-size="14" font-weight="bold">
+      Single-Cell &amp; Atomistic Biophysics Atlas
+    </text>
+    <text x="20" y="88" fill="#94a3b8" font-family="sans-serif" font-size="11">
+      Multi-omic biomarker discovery, MD free-energy landscapes &amp; survival models
+    </text>
+
+    <!-- Figure 1A: 3D Protein-Ligand Free Energy Landscape Contour -->
+    <g transform="translate(20, 106)">
+      <rect width="182" height="145" rx="10" fill="#051324" stroke="#1e3a5f" stroke-width="1" />
+      <text x="12" y="20" fill="#38bdf8" font-family="monospace" font-size="10" font-weight="bold">
+        FIG 1A. FEL CONTOUR (ΔG)
+      </text>
+      <!-- Contour rings -->
+      <ellipse cx="91" cy="84" rx="68" ry="42" fill="#0284c7" fill-opacity="0.15" stroke="#0ea5e9" stroke-width="1" stroke-dasharray="3 2" />
+      <ellipse cx="95" cy="84" rx="48" ry="29" fill="#06b6d4" fill-opacity="0.22" stroke="#22d3ee" stroke-width="1.2" />
+      <ellipse cx="100" cy="84" rx="28" ry="17" fill="#10b981" fill-opacity="0.35" stroke="#34d399" stroke-width="1.5" />
+      <circle cx="103" cy="84" r="6" fill="#f43f5e" stroke="#ffffff" stroke-width="1.5" />
+      <text x="12" y="136" fill="#94a3b8" font-family="monospace" font-size="9">
+        PC1 vs PC2 • Min: -11.8 kcal/mol
+      </text>
+    </g>
+
+    <!-- Figure 1B: Differential Expression Volcano / Survival Curve -->
+    <g transform="translate(216, 106)">
+      <rect width="184" height="145" rx="10" fill="#051324" stroke="#1e3a5f" stroke-width="1" />
+      <text x="12" y="20" fill="#34d399" font-family="monospace" font-size="10" font-weight="bold">
+        FIG 1B. KAPLAN-MEIER HR
+      </text>
+      <!-- Axes -->
+      <line x1="24" y1="120" x2="168" y2="120" stroke="#475569" stroke-width="1" />
+      <line x1="24" y1="34" x2="24" y2="120" stroke="#475569" stroke-width="1" />
+      <!-- Step survival curve 1 (High expression) -->
+      <path d="M 24 42 L 60 42 L 60 56 L 98 56 L 98 70 L 136 70 L 136 82 L 164 82" fill="none" stroke="#34d399" stroke-width="2.2" />
+      <!-- Step survival curve 2 (Control) -->
+      <path d="M 24 42 L 48 42 L 48 68 L 80 68 L 80 92 L 114 92 L 114 110 L 164 110" fill="none" stroke="#f43f5e" stroke-width="2.2" stroke-dasharray="4 2" />
+      <text x="12" y="136" fill="#94a3b8" font-family="monospace" font-size="9">
+        Log-rank p &lt; 0.0001 • HR = 0.41
+      </text>
+    </g>
+
+    <!-- Bottom Citation & Peer Review Verification Bar -->
+    <g transform="translate(20, 266)">
+      <rect width="380" height="44" rx="8" fill="#07192e" stroke="#1e3a5f" stroke-width="1" />
+      <circle cx="22" cy="22" r="8" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="1.2" />
+      <path d="M 18 22 L 21 25 L 27 19" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" />
+      <text x="40" y="20" fill="#e2e8f0" font-family="sans-serif" font-size="11" font-weight="bold">
+        120+ Peer-Reviewed Articles &amp; Book Chapters
+      </text>
+      <text x="40" y="34" fill="#38bdf8" font-family="monospace" font-size="10">
+        SCI / Scopus / PubMed Indexed • ICMJE &amp; PRISMA 2020 Compliant
+      </text>
+    </g>
+  </g>
+
+  <!-- Right Panel: Citation Analytics, Quartile Distribution & Grant Consortia -->
+  <g transform="translate(472, 86)">
+    <!-- Card 1: Journal Quartile & Impact Metrics -->
+    <rect width="296" height="156" rx="16" fill="url(#cardGrad)" stroke="#0ea5e9" stroke-opacity="0.45" stroke-width="1.5" />
+    <text x="20" y="30" fill="#7dd3fc" font-family="monospace" font-size="11" font-weight="bold">
+      PUBLICATION IMPACT ANALYTICS
+    </text>
+
+    <!-- Bar 1 -->
+    <text x="20" y="56" fill="#cbd5e1" font-family="sans-serif" font-size="11" font-weight="bold">Q1 High-Impact Journals</text>
+    <text x="276" y="56" fill="#34d399" font-family="monospace" font-size="11" font-weight="bold" text-anchor="end">78%</text>
+    <rect x="20" y="64" width="256" height="8" rx="4" fill="#0f172a" />
+    <rect x="20" y="64" width="200" height="8" rx="4" fill="url(#accentGrad)" />
+
+    <!-- Bar 2 -->
+    <text x="20" y="92" fill="#cbd5e1" font-family="sans-serif" font-size="11" font-weight="bold">Multi-Omics &amp; MD Citations</text>
+    <text x="276" y="92" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold" text-anchor="end">92%</text>
+    <rect x="20" y="100" width="256" height="8" rx="4" fill="#0f172a" />
+    <rect x="20" y="100" width="235" height="8" rx="4" fill="#38bdf8" />
+
+    <!-- Bar 3 -->
+    <text x="20" y="128" fill="#cbd5e1" font-family="sans-serif" font-size="11" font-weight="bold">Reproducible Code &amp; Data</text>
+    <text x="276" y="128" fill="#a78bfa" font-family="monospace" font-size="11" font-weight="bold" text-anchor="end">100%</text>
+    <rect x="20" y="136" width="256" height="8" rx="4" fill="#0f172a" />
+    <rect x="20" y="136" width="256" height="8" rx="4" fill="#a78bfa" />
+
+    <!-- Card 2: Grant Consortia & Research Domains -->
+    <g transform="translate(0, 174)">
+      <rect width="296" height="156" rx="16" fill="url(#cardGrad)" stroke="#10b981" stroke-opacity="0.45" stroke-width="1.5" />
+      <text x="20" y="28" fill="#6ee7b7" font-family="monospace" font-size="11" font-weight="bold">
+        GLOBAL GRANT &amp; CONSORTIA DOMAINS
+      </text>
+
+      <g transform="translate(20, 42)">
+        <rect width="122" height="44" rx="8" fill="#062038" stroke="#1e3a5f" stroke-width="1" />
+        <text x="12" y="19" fill="#38bdf8" font-family="monospace" font-size="10" font-weight="bold">STRUCTURAL MD</text>
+        <text x="12" y="34" fill="#e2e8f0" font-family="sans-serif" font-size="11" font-weight="bold">12+ μs Runtime</text>
+      </g>
+
+      <g transform="translate(154, 42)">
+        <rect width="122" height="44" rx="8" fill="#062038" stroke="#1e3a5f" stroke-width="1" />
+        <text x="12" y="19" fill="#34d399" font-family="monospace" font-size="10" font-weight="bold">SINGLE-CELL</text>
+        <text x="12" y="34" fill="#e2e8f0" font-family="sans-serif" font-size="11" font-weight="bold">Spatial &amp; UMAP</text>
+      </g>
+
+      <g transform="translate(20, 96)">
+        <rect width="122" height="44" rx="8" fill="#062038" stroke="#1e3a5f" stroke-width="1" />
+        <text x="12" y="19" fill="#f59e0b" font-family="monospace" font-size="10" font-weight="bold">AMR GENOMICS</text>
+        <text x="12" y="34" fill="#e2e8f0" font-family="sans-serif" font-size="11" font-weight="bold">Resistome Maps</text>
+      </g>
+
+      <g transform="translate(154, 96)">
+        <rect width="122" height="44" rx="8" fill="#062038" stroke="#1e3a5f" stroke-width="1" />
+        <text x="12" y="19" fill="#a78bfa" font-family="monospace" font-size="10" font-weight="bold">GRANT SUPPORT</text>
+        <text x="12" y="34" fill="#e2e8f0" font-family="sans-serif" font-size="11" font-weight="bold">$3.2M+ Funded</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Bottom Telemetry Strip -->
+  <g transform="translate(32, 434)">
+    <rect width="736" height="100" rx="16" fill="#061527" stroke="#1e3a5f" stroke-width="1.2" />
+    <text x="24" y="28" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">
+      PUBLICATION PIPELINE: IN SILICO DISCOVERY → BIOSTATISTICAL VALIDATION → Q1 JOURNAL SUBMISSION
+    </text>
+
+    <!-- 4 Step Nodes -->
+    <g transform="translate(24, 44)">
+      <rect width="160" height="38" rx="8" fill="#0b2442" stroke="#0284c7" stroke-width="1" />
+      <text x="80" y="23" fill="#f8fafc" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">
+        1. Atomistic &amp; NGS Data
+      </text>
+    </g>
+    <path d="M 190 63 L 204 63" stroke="#38bdf8" stroke-width="1.5" />
+
+    <g transform="translate(208, 44)">
+      <rect width="160" height="38" rx="8" fill="#0b2442" stroke="#0d9488" stroke-width="1" />
+      <text x="80" y="23" fill="#f8fafc" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">
+        2. G*Power &amp; Survival
+      </text>
+    </g>
+    <path d="M 374 63 L 388 63" stroke="#2dd4bf" stroke-width="1.5" />
+
+    <g transform="translate(392, 44)">
+      <rect width="160" height="38" rx="8" fill="#0b2442" stroke="#10b981" stroke-width="1" />
+      <text x="80" y="23" fill="#f8fafc" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">
+        3. 300-DPI Figure Plates
+      </text>
+    </g>
+    <path d="M 558 63 L 572 63" stroke="#34d399" stroke-width="1.5" />
+
+    <g transform="translate(576, 44)">
+      <rect width="136" height="38" rx="8" fill="#064e3b" stroke="#34d399" stroke-width="1.2" />
+      <text x="68" y="23" fill="#ecfdf5" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">
+        4. Q1 Peer Review
+      </text>
+    </g>
+  </g>
+</svg>
