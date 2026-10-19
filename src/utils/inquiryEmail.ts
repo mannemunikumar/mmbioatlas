@@ -3,13 +3,11 @@
  * Ensures inquiries are delivered directly to the leadership team:
  * - mmbioatlas@gmail.com
  * - mannemunidivya@gmail.com
- * - research@mmbioatlas.org
  */
 
 export const INQUIRY_RECIPIENT_EMAILS = [
   'mmbioatlas@gmail.com',
-  'mannemunidivya@gmail.com',
-  'research@mmbioatlas.org'
+  'mannemunidivya@gmail.com'
 ];
 
 export const INQUIRY_WHATSAPP_PHONE = '919492373997';

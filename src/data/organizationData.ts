@@ -269,7 +269,6 @@ export const LEADERSHIP_CONTACT = {
   githubUrl: 'https://github.com/mannemunikumar',
   email: 'mmbioatlas@gmail.com',
   directEmail: 'mmbioatlas@gmail.com',
-  institutionalEmail: 'research@mmbioatlas.org',
   academicEmail: 'academy@mmbioatlas.org',
   operatingHours: 'Mon - Sat (09:00 - 18:00 IST)',
   expertise: [
