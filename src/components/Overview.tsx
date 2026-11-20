@@ -25,7 +25,8 @@ import {
   Award,
   ShieldCheck,
   Building2,
-  Globe2
+  Globe2,
+  Download
 } from 'lucide-react';
 import { Logo } from './Logo';
 import { AtlasView } from '../types';
@@ -96,6 +97,15 @@ export const Overview: React.FC<OverviewProps> = ({
                 <span>Explore Services</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
+              <a
+                id="hero-download-brochure"
+                href="/assets/aistudio/MM_BioATLAS_Brochure_553a17f8.pdf"
+                download="MM_BioATLAS_Brochure.pdf"
+                className="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-blue-50/70 text-[#0b3b70] border border-blue-200 hover:border-[#0b3b70]/40 font-semibold text-sm transition shadow-xs active:scale-95"
+              >
+                <Download className="w-4 h-4" />
+                <span>Download Brochure</span>
+              </a>
             </div>
           </div>
 
